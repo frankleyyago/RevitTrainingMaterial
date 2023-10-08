@@ -45,4 +45,16 @@
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
 	</AddIn>
+	<!--DbElement-->
+	<AddIn Type="Command">
+		<Name>MyIntroCs</Name>
+		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
+		<AddInId>047FE93B-78FA-46BF-AE80-6998D7D45BA8</AddInId>
+		<FullClassName>MyIntroCs.DbElement</FullClassName>
+		<Text>DbElement</Text>
+		<Description>Show a dialog box with some elements infos</Description>
+		<VendorId>Frankleyyago</VendorId>
+		<VendorDescription>github.com/frankleyyago</VendorDescription>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
 </RevitAddIns>
