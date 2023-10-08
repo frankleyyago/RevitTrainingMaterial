@@ -70,6 +70,7 @@
     <Compile Include="1_HelloWorldApp.cs" />
     <Compile Include="1_HelloWorldFull.cs" />
     <Compile Include="1_HelloWorldSimple.cs" />
+    <Compile Include="1_CommandData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -23,12 +23,23 @@
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
 	</AddIn>
 	<AddIn Type="Application">
-		<Name>MyIntroCs</Name>
+		<Name>HelloWorldApp</Name>
 		<Assembly>MyIntroCs.dll</Assembly>
 		<AddInId>801C59C1-0C17-4B3A-AF22-471E282194BD</AddInId>
 		<FullClassName>MyIntroCs.HelloWorldApp</FullClassName>
 		<Text>HelloWorldApp</Text>
 		<Description>Show a dialog box message when Revit starts up</Description>
+		<VendorId>Frankleyyago</VendorId>
+		<VendorDescription>github.com/frankleyyago</VendorDescription>
+		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>MyIntroCs</Name>
+		<Assembly>MyIntroCs.dll</Assembly>
+		<AddInId>E6A2E593-060B-4100-BC28-177370DB34DF</AddInId>
+		<FullClassName>MyIntroCs.CommandData</FullClassName>
+		<Text>CommandData</Text>
+		<Description>Show a dialog box with some infos</Description>
 		<VendorId>Frankleyyago</VendorId>
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
