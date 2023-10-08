@@ -13,12 +13,12 @@ namespace MyIntroCs
     /// <summary>
     /// Hello World #1 - A minimum Revit external command.
     /// </summary>
-    [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.ReadOnly)]
-    public class HelloWorld : Autodesk.Revit.UI.IExternalCommand
+    [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
+    public class HelloWorldFull : Autodesk.Revit.UI.IExternalCommand
     {
         public Autodesk.Revit.UI.Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            Autodesk.Revit.UI.TaskDialog.Show("My Dialog Title", "Hello World!");
+            Autodesk.Revit.UI.TaskDialog.Show("My Dialog Title", "Hello World Full!");
 
             return Autodesk.Revit.UI.Result.Succeeded;
         }
