@@ -110,6 +110,7 @@
   <ItemGroup>
     <None Include="AdnpIntroCs.addin">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

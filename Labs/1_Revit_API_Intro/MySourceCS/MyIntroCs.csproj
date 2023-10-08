@@ -67,19 +67,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="1_HelloWorldApp.cs" />
-    <Compile Include="1_HelloWorldFull.cs" />
-    <Compile Include="1_HelloWorldSimple.cs" />
-    <Compile Include="1_CommandData.cs" />
+    <Compile Include="1_HelloWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdnpIntroCs.addin">
+    <None Include="MyIntroCs.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2023\"</PostBuildEvent>
+    <PostBuildEvent>echo Configuration: $(Configuration)
+if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).dll" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).pdb" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)*.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2023"</PostBuildEvent>
   </PropertyGroup>
 </Project>

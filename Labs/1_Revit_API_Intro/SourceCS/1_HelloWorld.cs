@@ -40,11 +40,12 @@ using Autodesk.Revit.ApplicationServices; // This is for Revit Application
 
 namespace IntroCs
 {
-  /// <summary>
-  /// Hello World #1 - A minimum Revit external command
-  /// with all namespaces fully qualified.
-  /// </summary>
-  [Autodesk.Revit.Attributes.Transaction(
+    #region HelloWorld
+    /// <summary>
+    /// Hello World #1 - A minimum Revit external command
+    /// with all namespaces fully qualified.
+    /// </summary>
+    [Autodesk.Revit.Attributes.Transaction(
     Autodesk.Revit.Attributes.TransactionMode.Manual )]
   public class HelloWorld : Autodesk.Revit.UI.IExternalCommand
   {
@@ -60,12 +61,14 @@ namespace IntroCs
       return Autodesk.Revit.UI.Result.Succeeded;
     }
   }
+    #endregion
 
-  /// <summary>
-  /// Hello World #2 - simplified without full namespace
-  /// and using ReadOnly attribute.
-  /// </summary>
-  [Transaction( TransactionMode.ReadOnly )]
+    #region HelloWorldSimple
+    /// <summary>
+    /// Hello World #2 - simplified without full namespace
+    /// and using ReadOnly attribute.
+    /// </summary>
+    [Transaction( TransactionMode.Manual )]
   public class HelloWorldSimple : IExternalCommand
   {
     public Result Execute(
@@ -80,13 +83,15 @@ namespace IntroCs
       return Result.Succeeded;
     }
   }
+    #endregion
 
-  /// <summary>
-  /// Hello World #3 - minimum external application
-  /// Difference: IExternalApplication instead of IExternalCommand.
-  /// In addin manifest, use addin type "Application" and Name instead of Text tag.
-  /// </summary>
-  public class HelloWorldApp : IExternalApplication
+    #region HelloWorldApp
+    /// <summary>
+    /// Hello World #3 - minimum external application
+    /// Difference: IExternalApplication instead of IExternalCommand.
+    /// In addin manifest, use addin type "Application" and Name instead of Text tag.
+    /// </summary>
+    public class HelloWorldApp : IExternalApplication
   {
     // OnStartup() - called when Revit starts.
 
@@ -104,14 +109,16 @@ namespace IntroCs
       return Result.Succeeded;
     }
   }
+    #endregion
 
-  /// <summary>
-  /// Command Arguments
-  /// Take a look at the command arguments.
-  /// commandData is the topmost object and
-  /// provides the entry point to the Revit model.
-  /// </summary>
-  [Transaction( TransactionMode.ReadOnly )]
+    #region CommandData
+    /// <summary>
+    /// Command Arguments
+    /// Take a look at the command arguments.
+    /// commandData is the topmost object and
+    /// provides the entry point to the Revit model.
+    /// </summary>
+    [Transaction( TransactionMode.Manual )]
   public class CommandData : IExternalCommand
   {
     public Result Execute(
@@ -181,4 +188,5 @@ namespace IntroCs
     }
     #endregion // Revit Macros
   }
+    #endregion
 }

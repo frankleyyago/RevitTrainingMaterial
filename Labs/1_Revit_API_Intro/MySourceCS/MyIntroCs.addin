@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
+	<!--HelloWorld-->
 	<AddIn Type="Command">
 		<Name>MyIntroCs</Name>
-		<Assembly>MyIntroCs.dll</Assembly>
+		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
 		<AddInId>FD8D84B9-6F1F-4BF7-845E-5A4C6D298CCA</AddInId>
 		<FullClassName>MyIntroCs.HelloWorldFull</FullClassName>
 		<Text>HelloWorldFull</Text>
@@ -13,7 +14,7 @@
 	</AddIn>
 	<AddIn Type="Command">
 		<Name>MyIntroCs</Name>
-		<Assembly>MyIntroCs.dll</Assembly>
+		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
 		<AddInId>8FAD4567-ECA2-477F-A03D-409EA16CDDCC</AddInId>
 		<FullClassName>MyIntroCs.HelloWorldSimple</FullClassName>
 		<Text>HelloWorldSimple</Text>
@@ -24,7 +25,7 @@
 	</AddIn>
 	<AddIn Type="Application">
 		<Name>HelloWorldApp</Name>
-		<Assembly>MyIntroCs.dll</Assembly>
+		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
 		<AddInId>801C59C1-0C17-4B3A-AF22-471E282194BD</AddInId>
 		<FullClassName>MyIntroCs.HelloWorldApp</FullClassName>
 		<Text>HelloWorldApp</Text>
@@ -35,7 +36,7 @@
 	</AddIn>
 	<AddIn Type="Command">
 		<Name>MyIntroCs</Name>
-		<Assembly>MyIntroCs.dll</Assembly>
+		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
 		<AddInId>E6A2E593-060B-4100-BC28-177370DB34DF</AddInId>
 		<FullClassName>MyIntroCs.CommandData</FullClassName>
 		<Text>CommandData</Text>
