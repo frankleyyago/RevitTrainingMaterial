@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.ApplicationServices;
@@ -43,6 +39,7 @@ namespace MyIntroCs
             //Call a method to show parameters
             ShowParameters(e, "Element Parameters");
 
+            //Check type parameters
             ElementId eTypeId = e.GetTypeId();
             ElementType eType = (ElementType)_doc.GetElement(eTypeId);
             ShowParameters(eType, "Type Parameters");
@@ -50,6 +47,7 @@ namespace MyIntroCs
             return Result.Succeeded;
         }
 
+        #region ShowBasicElementInfo()
         /// <summary>
         /// Show basic information about the given element.
         /// </summary>
@@ -73,7 +71,9 @@ namespace MyIntroCs
 
             TaskDialog.Show("Basic Element Info", s);
         }
+        #endregion
 
+        #region IdentifyElement()
         /// <summary>
         /// Identify the type of the element.
         /// </summary>
@@ -133,7 +133,9 @@ namespace MyIntroCs
 
             TaskDialog.Show("Identify Element", s);
         }
+        #endregion
 
+        #region ShowParameters()
         /// <summary>
         /// Show all paramaters values of the element.
         /// </summary>
@@ -151,11 +153,13 @@ namespace MyIntroCs
 
             TaskDialog.Show(header, s);
         }
+        #endregion
 
+        #region ParameterToString()
         /// <summary>
         /// Return a string from of the given parameter.
         /// </summary>
-        private string ParameterToString(Parameter p)
+        public static string ParameterToString(Parameter p)
         {
             string val = "none";
 
@@ -176,11 +180,11 @@ namespace MyIntroCs
                     break;
                 case StorageType.String:
                     string sVal = p.AsString();
-                    val = sVal.ToString();
+                    val = sVal;
                     break;
                 case StorageType.ElementId:
-                    ElementId eVal = p.AsElementId();
-                    val = eVal.IntegerValue.ToString();
+                    ElementId idVal = p.AsElementId();
+                    val = idVal.IntegerValue.ToString();
                     break;
                 case StorageType.None:
                     break;
@@ -190,5 +194,6 @@ namespace MyIntroCs
 
             return val;
         }
+        #endregion
     }
 }
