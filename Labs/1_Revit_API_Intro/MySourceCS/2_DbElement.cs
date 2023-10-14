@@ -48,6 +48,9 @@ namespace MyIntroCs
             RetrieveParameter(e, "Element parameter (by BuiltInParameter and Name)");
             RetrieveParameter(eType, "Type parameter (by BuiltInParameter and Name)");
 
+            //Location
+            ShowLocation(e);
+
             return Result.Succeeded;
         }
 
@@ -265,6 +268,61 @@ namespace MyIntroCs
 
             //Show what we get.
             TaskDialog.Show(h, s);
+        }
+        #endregion
+        /// <summary>
+        /// Show the location of an element
+        /// </summary>
+        /// <param name="e"></param>
+        #region ShowLocation()
+        public void ShowLocation(Element e)
+        {
+            string s = "Location Information: \n\n";
+            Location loc = e.Location;
+
+            if (loc is LocationPoint)
+            {
+                //In case we've a location point
+
+                LocationPoint locPoint = (LocationPoint)loc;
+                XYZ pt = locPoint.Point;
+                double r = locPoint.Rotation;
+
+                s += $"LocationPont\n";
+                s += $"Point = {PointToString(pt)}\n";
+                s += $"Rotation = {r.ToString()}\n";
+                s += "Rotation = " + r.ToString() + "\n";
+            }
+            else if (loc is LocationCurve)
+            {
+                //In case we've a location curve
+
+                LocationCurve locCurve = (LocationCurve)loc;
+                Curve crv = locCurve.Curve;
+
+                s += $"LocationCurve: \n";
+                s += $"EndPoint (0) / Start Point = {PointToString(crv.GetEndPoint(0))}\n";
+                s += $"EndPoint (1) / End Point = {PointToString(crv.GetEndPoint(1))}\n";
+                s += $"Lenght = {crv.Length.ToString()}\n";
+
+                //Location Curve also has property JoinType at the end
+                s += $"JoinType(0) = {locCurve.get_JoinType(0).ToString()}\n";
+                s += $"JoinType(1) = {locCurve.get_JoinType(0).ToString()}\n";
+
+                //Show it
+                TaskDialog.Show("Show Location", s);
+            }
+        }
+
+        public static string PointToString(XYZ pt)
+        {
+            if (pt == null)
+            {
+                return "";
+            }
+
+            //Return a formated XYZ with only 2 decimal places (F2)
+            return string.Format($"({pt.X.ToString("F2")}, {pt.Y.ToString("F2")}, {pt.Z.ToString("F2")})");
         }
         #endregion
     }
