@@ -36,13 +36,17 @@ namespace MyIntroCs
             //Call a method to identify element type.
             IdentifyElement(e);
 
-            //Call a method to show parameters
+            //Call a method to show parameters.
             ShowParameters(e, "Element Parameters");
 
-            //Check type parameters
+            //Check type parameters.
             ElementId eTypeId = e.GetTypeId();
             ElementType eType = (ElementType)_doc.GetElement(eTypeId);
-            ShowParameters(eType, "Type Parameters");
+            ShowParameters(eType, "Type Parameters: ");
+
+            //Access to each parameter and type parameter
+            RetrieveParameter(e, "Element parameter (by BuiltInParameter and Name)");
+            RetrieveParameter(eType, "Type parameter (by BuiltInParameter and Name)");
 
             return Result.Succeeded;
         }
@@ -50,6 +54,7 @@ namespace MyIntroCs
         #region ShowBasicElementInfo()
         /// <summary>
         /// Show basic information about the given element.
+        /// <param name="e"></param>
         /// </summary>
         public void ShowBasicElementInfo(Element e)
         {
@@ -76,6 +81,7 @@ namespace MyIntroCs
         #region IdentifyElement()
         /// <summary>
         /// Identify the type of the element.
+        /// <param name="e"></param>
         /// </summary>
         public void IdentifyElement(Element e)
         {
@@ -138,8 +144,10 @@ namespace MyIntroCs
         #region ShowParameters()
         /// <summary>
         /// Show all paramaters values of the element.
+        /// <param name="e"></param>
+        /// <param name="h"></param>
         /// </summary>
-        public void ShowParameters(Element e, string header)
+        public void ShowParameters(Element e, string h)
         {
             string s = string.Empty;
 
@@ -151,13 +159,14 @@ namespace MyIntroCs
                 s += $"{name} = {val}\n";
             }
 
-            TaskDialog.Show(header, s);
+            TaskDialog.Show(h, s);
         }
         #endregion
 
         #region ParameterToString()
         /// <summary>
         /// Return a string from of the given parameter.
+        /// <param name="p"></param>
         /// </summary>
         public static string ParameterToString(Parameter p)
         {
@@ -193,6 +202,69 @@ namespace MyIntroCs
             }
 
             return val;
+        }
+        #endregion
+        /// <summary>
+        /// Retrieve a specif parameter individually.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="h"></param>
+        #region RetrieveParameter()
+
+        public void RetrieveParameter(Element e, string h)
+        {
+            string s = string.Empty;
+
+            //Get a parameter by BuiltInParameter.
+            Parameter param = e.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
+
+            if (param != null)
+            {
+                s += $"Comments (by BuiltInParameter) = {ParameterToString(param)}\n";
+            }
+
+            //Get a parameter by Name.
+            param = e.LookupParameter("Mark");
+
+            if (param != null )
+            {
+                s += $"Mark (by Name) = {ParameterToString(param)}\n";
+            }
+
+            //Again get parameter by BuiltInParameter.
+            param = e.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_COMMENTS);
+
+            if (param != null)
+            {
+                s += $"Type Comments (by BuiltInParameter) = {ParameterToString(param)}\n";
+            }
+
+            //Again get parameter by Name.
+            param = e.LookupParameter("Fire Rating");
+
+            if (param != null)
+            {
+                s += $"Fire Rating (by Name) = {ParameterToString(param)}\n";
+            }
+
+            //Using the BuiltInParameter, we can sometimes access one that is not in the parameters set.
+            //This works only for element type.
+            param = e.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_AND_TYPE_NAMES_PARAM);
+
+            if (param != null)
+            {
+                s += $"SYMBOL_FAMILY_AND_TYPE_NAMES_PARAM (only by BuiltInParameter) = {ParameterToString(param)}\n";
+            }
+
+            param = e.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM);
+
+            if (param != null)
+            {
+                s += $"SYMBOL_FAMILY_NAME_PARAM (only by BuiltInParameter) = {ParameterToString(param)}\n";
+            }
+
+            //Show what we get.
+            TaskDialog.Show(h, s);
         }
         #endregion
     }

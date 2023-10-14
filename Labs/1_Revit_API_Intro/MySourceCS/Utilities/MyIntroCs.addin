@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
-	<AddIn Type="Application">
+	<!--App-->
+	<!--<AddIn Type="Application">
 		<Name>App</Name>
 		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
 		<AddInId>DEFA594E-8DCF-4B1A-9B2B-56BBF66D8DB3</AddInId>
@@ -10,8 +11,8 @@
 		<VendorId>Frankleyyago</VendorId>
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
-	</AddIn>
-	<!--HelloWorld--><!--
+	</AddIn>-->
+	<!--HelloWorld-->
 	<AddIn Type="Command">
 		<Name>MyIntroCs</Name>
 		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
@@ -56,7 +57,7 @@
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
 	</AddIn>
-	--><!--DbElement--><!--
+	<!--DbElement-->
 	<AddIn Type="Command">
 		<Name>MyIntroCs</Name>
 		<Assembly>MyIntroCs/MyIntroCs.dll</Assembly>
@@ -67,5 +68,5 @@
 		<VendorId>Frankleyyago</VendorId>
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
-	</AddIn>-->
+	</AddIn>
 </RevitAddIns>

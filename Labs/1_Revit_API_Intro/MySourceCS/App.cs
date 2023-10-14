@@ -40,7 +40,7 @@ namespace MyIntroCs
             RibbonPanel panel = RibbonPanel(application);
             string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin2", thisAssemblyPath, "MyIntro.Command"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin2", thisAssemblyPath, "MyIntroCs.1_HelloWorld"))
                 is PushButton button1)
             {
                 button1.ToolTip = "My First Plugin";
@@ -53,7 +53,7 @@ namespace MyIntroCs
 
             panel.AddSeparator();
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin2", "FirstPlugin3", thisAssemblyPath, "MyIntro.2_DbElement"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin2", "FirstPlugin3", thisAssemblyPath, "MyIntroCs.2_DbElement"))
                 is PushButton button2)
             {
                 button2.ToolTip = "My First Plugin";
@@ -61,6 +61,17 @@ namespace MyIntroCs
                 Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(thisAssemblyPath), "Resources", "Icon.ico"));
                 BitmapImage bitmapImage = new BitmapImage(uri);
                 button2.LargeImage = bitmapImage;
+
+            }
+
+            if (panel.AddItem(new PushButtonData("FirstPlugin3", "FirstPlugin4", thisAssemblyPath, "MyIntroCs.Command"))
+                is PushButton button3)
+            {
+                button3.ToolTip = "My First Plugin";
+
+                Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(thisAssemblyPath), "Resources", "Icon.ico"));
+                BitmapImage bitmapImage = new BitmapImage(uri);
+                button3.LargeImage = bitmapImage;
 
             }
 
