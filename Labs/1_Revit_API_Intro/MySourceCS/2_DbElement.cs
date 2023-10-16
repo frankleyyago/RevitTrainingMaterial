@@ -27,29 +27,32 @@ namespace MyIntroCs
             //Pick an element on a screen.
             Reference r = uidoc.Selection.PickObject(ObjectType.Element, "Pick an element");
 
-            //Get an element
+            //Get an element.
             Element e = _doc.GetElement(r);
 
-            //Call a method to show infos.
+            //1) Call a method to show infos.
             ShowBasicElementInfo(e);
 
-            //Call a method to identify element type.
+            //2) Call a method to identify element type.
             IdentifyElement(e);
 
-            //Call a method to show parameters.
+            //3) Call a method to show parameters.
             ShowParameters(e, "Element Parameters");
 
-            //Check type parameters.
+            //3) Check type parameters.
             ElementId eTypeId = e.GetTypeId();
             ElementType eType = (ElementType)_doc.GetElement(eTypeId);
             ShowParameters(eType, "Type Parameters: ");
 
-            //Access to each parameter and type parameter
+            //4) Access to each parameter and type parameter.
             RetrieveParameter(e, "Element parameter (by BuiltInParameter and Name)");
             RetrieveParameter(eType, "Type parameter (by BuiltInParameter and Name)");
 
-            //Location
+            //5) Call a method to show location infos.
             ShowLocation(e);
+
+            //6) Call a method blablabla
+            ShowGeomtry(e, "Show Geometry");
 
             return Result.Succeeded;
         }
@@ -164,11 +167,9 @@ namespace MyIntroCs
 
             TaskDialog.Show(h, s);
         }
-        #endregion
 
-        #region ParameterToString()
         /// <summary>
-        /// Return a string from of the given parameter.
+        /// Helper function - Return a string from of the given parameter.
         /// <param name="p"></param>
         /// </summary>
         public static string ParameterToString(Parameter p)
@@ -207,12 +208,13 @@ namespace MyIntroCs
             return val;
         }
         #endregion
+
+        #region RetrieveParameter()
         /// <summary>
         /// Retrieve a specif parameter individually.
         /// </summary>
         /// <param name="e"></param>
         /// <param name="h"></param>
-        #region RetrieveParameter()
 
         public void RetrieveParameter(Element e, string h)
         {
@@ -270,11 +272,12 @@ namespace MyIntroCs
             TaskDialog.Show(h, s);
         }
         #endregion
+
+        #region ShowLocation()
         /// <summary>
         /// Show the location of an element
         /// </summary>
         /// <param name="e"></param>
-        #region ShowLocation()
         public void ShowLocation(Element e)
         {
             string s = "Location Information: \n\n";
@@ -288,10 +291,9 @@ namespace MyIntroCs
                 XYZ pt = locPoint.Point;
                 double r = locPoint.Rotation;
 
-                s += $"LocationPont\n";
+                s += $"LocationPoint\n";
                 s += $"Point = {PointToString(pt)}\n";
                 s += $"Rotation = {r.ToString()}\n";
-                s += "Rotation = " + r.ToString() + "\n";
             }
             else if (loc is LocationCurve)
             {
@@ -323,6 +325,72 @@ namespace MyIntroCs
 
             //Return a formated XYZ with only 2 decimal places (F2)
             return string.Format($"({pt.X.ToString("F2")}, {pt.Y.ToString("F2")}, {pt.Z.ToString("F2")})");
+        }
+        #endregion
+
+        #region ShowGeometry()
+        /// <summary>
+        /// Show the geometry information of the given element.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="h"></param>
+        public void ShowGeomtry(Element e, string h)
+        {
+            //Set a geometry option.
+            Options opt = _app.Create.NewGeometryOptions();
+            opt.DetailLevel = ViewDetailLevel.Fine;
+
+            //Get the geometry from the element.
+            GeometryElement geomE = e.get_Geometry(opt);
+
+            string s = (geomE == null) ? "no data" : GeometryElementToString(geomE);
+
+            TaskDialog.Show(h, s);
+        }
+
+        /// <summary>
+        /// Helper function - Parse the geometry element by geometry type.
+        /// </summary>
+        /// <param name="geomE"></param>
+        /// <returns></returns>
+        public static string GeometryElementToString(GeometryElement geomE)
+        {
+            string s = string.Empty;
+
+            foreach (GeometryObject geomO in geomE)
+            {
+                if (geomO is Solid)
+                {
+                    //Ex. Wall.
+                    Solid solid = (Solid)geomO;
+                    s += "Solid\n";
+                }
+                else if (geomO is GeometryInstance)
+                {
+                    //Ex. Door or Window.
+                    s += " -- Geometry.Instance -- \n";
+                    GeometryInstance geomI = (GeometryInstance)geomO;
+                    GeometryElement geomEl = geomI.SymbolGeometry;
+
+                    s += GeometryElementToString(geomE);
+                }
+                else if (geomO is Curve)
+                {
+                    Curve curv = (Curve)geomO;
+                    s += "Curve\n";
+                }
+                else if (geomO is Mesh)
+                {
+                    Mesh mesh = (Mesh)geomO;
+                    s += "Mesh\n";
+                }
+                else
+                {
+                    s += $" *** unknown geometry type {geomO.GetType().Name}";
+                }
+            }
+
+            return s;
         }
         #endregion
     }
