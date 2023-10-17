@@ -25,12 +25,20 @@ namespace MyIntroCs
             _app = uiapp.Application;
             _doc = uidoc.Document;
 
+            ListFamilyTypes();
+
+            return Result.Succeeded;
+        }
+
+        public void ListFamilyTypes()
+        {
+
             //Filter the document looking for element of type: WallType.
             FilteredElementCollector wCollector = new FilteredElementCollector(_doc);
-            wCollector.OfClass(typeof(WallType));
+            wCollector.WherePasses(new ElementClassFilter(typeof(WallType)));
 
             //Create a list of elements with filtered elements, in this casse walls.
-            IList<Element> walls = (IList<Element>)wCollector.ToElementIds();
+            IList<Element> wallTypes = wCollector.ToElements();
 
             //Filter the document looking for elements of type: FamilySymbol and category: OST_Doors.
             FilteredElementCollector dCollector = new FilteredElementCollector(_doc);
@@ -38,11 +46,47 @@ namespace MyIntroCs
             dCollector.OfCategory(BuiltInCategory.OST_Doors);
 
             //Create a list of elements with filtered elements, in this case doors.
-            IList<Element> doors = (IList<Element>)dCollector.ToElementIds();
+            IList<Element> doorTypes = dCollector.ToElements();
 
-            TaskDialog.Show("Walls and Doors", $"{walls}\n {doors}");
+            ShowElementList(wallTypes, "Walls types (by filter): ");
+            ShowElementList(doorTypes, "Doors types (by filter): ");
+        }
 
-            return Result.Succeeded;
+        public void ShowElementList(IList<Element> e, string h)
+        {
+            string s = " - Class - Category - Name (or Family: Type Name) - Id - \r\n";
+
+            foreach (Element el in e)
+            {
+                s += ElementToString(el);
+            }
+
+            TaskDialog.Show($"{h} ({e.Count.ToString()}):", s);
+        }
+
+        public string ElementToString(Element e)
+        {
+            if (e == null)
+            {
+                return "none";
+            }
+
+            string name = "";
+
+            if (e is ElementType)
+            {
+                Parameter p = e.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_AND_TYPE_NAMES_PARAM);
+                if (p != null)
+                {
+                    name = p.AsString();
+                }
+            }
+            else
+            {
+                name = e.Name;
+            }
+
+            return $"{e.GetType().Name}; {e.Category.Name}; {name}; {e.Id.IntegerValue.ToString()}\r\n";
         }
     }
 }
