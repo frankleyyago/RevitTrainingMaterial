@@ -198,5 +198,86 @@ namespace MyIntroCs
             return wType;
         }
         #endregion
+
+        #region FindFamilyType_Door_v1()
+        public Element FindFamilyType_Door_v1(string dFamilyName, string dTypeName)
+        {
+            //Narrow down the collection with class and category.
+            FilteredElementCollector dCollector = new FilteredElementCollector(_doc)
+                .OfClass(typeof(FamilySymbol))
+                .OfCategory(BuiltInCategory.OST_Doors);
+
+            //Use LINQ query.
+            var dTypeElems =
+                from e in dCollector
+                where e.Name.Equals(dTypeName) &&
+                e.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM)
+                .AsString().Equals(dFamilyName)
+                select e;
+
+            //Get the result.
+            Element dType = null;
+
+            //Create a list of elements to get the result of the query.
+            IList<Element> dTypeList = dTypeElems.ToList();
+            if (dTypeList.Count > 0)
+            {
+                dType = dTypeList[0];
+            }
+
+            return dType;
+        }
+        #endregion
+
+        #region FindFamilyType_Door_v2()
+        public Element FindFamilyType_Door_v2(string dFamilyName, string dTypeName)
+        {
+            //(1) Find the family with the given name.
+
+            //Narrow down the collector by class.
+            FilteredElementCollector dCollector = new FilteredElementCollector(_doc)
+                .OfClass(typeof(Family));
+
+            //Use iterator.
+            Family dFamily = null;
+            FilteredElementIterator familyItr = dCollector.GetElementIterator();
+
+            while ((familyItr.MoveNext()))
+            {
+                Family fam = (Family) familyItr.Current;
+                //Check name and category.
+                if ((fam.Name == dFamilyName) & (fam.FamilyCategory.Id.IntegerValue == (int)BuiltInCategory.OST_Doors))
+                {
+                    dFamily = fam;
+                    break;
+                }
+            }
+
+            //(2) Find the type with the given name.
+
+            Element dType = null;
+            if (dFamily != null)
+            {
+                ISet<ElementId> familySymbolIds = dFamily.GetFamilySymbolIds();
+
+                if (familySymbolIds.Count > 0)
+                {
+                    //Get family symbols which is contained in this family.
+                    foreach (ElementId id in familySymbolIds)
+                    {
+                        FamilySymbol doorType = dFamily.Document.GetElement(id)
+                            as FamilySymbol;
+                        if ((doorType.Name == dTypeName))
+                        {
+                            dType = doorType;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return dType;
+        }
+        #endregion
     }
 }
