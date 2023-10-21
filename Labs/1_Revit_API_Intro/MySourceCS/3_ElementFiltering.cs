@@ -26,11 +26,23 @@ namespace MyIntroCs
             _app = uiapp.Application;
             _doc = uidoc.Document;
 
+            ////Call the method.
             //ListFamilyTypes();
 
-            FindFamilyType_Wall_v1("Basic Wall", "Generic - 8\"");
-            FindFamilyType_Wall_v2("Basic Wall", "Generic - 8\"");
-            FindFamilyType_Door_v1("Single-Flush", "36\" x 84\"");
+            ////Call the method with this given parameters.
+            //FindFamilyType_Wall_v1("Basic Wall", "Generic - 8\"");
+            //FindFamilyType_Wall_v2("Basic Wall", "Generic - 8\"");
+            //FindFamilyType_Door_v1("Single-Flush", "36\" x 84\"");
+
+            //Create a ElementType of type WallType and assign to it the value of the return of the method.
+            ElementType wType = (ElementType)FindFamilyType(_doc, typeof(WallType), "Basic Wall", "Generic - 8\"", null);
+            //Create a TaskDialog to show the value of the element.
+            TaskDialog.Show("Wall", $"{wType.Name}\n{wType.Category.Name}\n{wType.FamilyName}");
+
+            //Create a ElementType of type FamilySymbol and assign to it the value of the return of the method.
+            ElementType dType = (ElementType)FindFamilyType(_doc, typeof(FamilySymbol), "Single-Flush", "36\" x 84\"", null);
+            //Create a TaskDialog to show the value of the element.
+            TaskDialog.Show("Door", $"{dType.Name}\n{dType.Category.Name}\n{dType.FamilyName}");
 
             return Result.Succeeded;
         }
@@ -294,6 +306,49 @@ namespace MyIntroCs
         }
         #endregion
 
-        
+        #region FindFamilyType()
+        /// <summary>
+        /// Find an element (target) of the given type, name and category (optional).
+        /// </summary>
+        /// <param name="doc">Current document</param>
+        /// <param name="tType">Target type</param>
+        /// <param name="tFamilyName">Target family name</param>
+        /// <param name="tTypeName">Target type name</param>
+        /// <param name="tCategory">Target type name</param>
+        /// <returns></returns>
+        public static Element FindFamilyType(Document doc, Type tType, string tFamilyName, string tTypeName, Nullable<BuiltInCategory> tCategory)
+        {
+            //Narrow down the collector.
+            FilteredElementCollector tColletor = new FilteredElementCollector(doc)
+                .OfClass(tType);
+
+            //If you pass value to tCategory, then it'll narrow down even more the collector.
+            if (tCategory.HasValue)
+            {
+                tColletor.OfCategory(tCategory.Value);
+            }
+
+            //Use LINQ query.
+            var tElem =
+                from e in tColletor
+                where e.Name.Equals(tTypeName) &&
+                e.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM)
+                .AsString().Equals(tFamilyName)
+                select e;
+
+            //Create a list of elements to get the result of the query.
+            IList<Element> elems = tElem.ToList();
+
+            //Return the result.
+            if (elems.Count > 0)
+            {
+                return elems[0];
+            }
+
+            return null;
+        }
+        #endregion
+
+
     }
 }
