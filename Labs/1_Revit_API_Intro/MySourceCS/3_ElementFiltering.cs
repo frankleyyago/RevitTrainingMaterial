@@ -26,9 +26,11 @@ namespace MyIntroCs
             _app = uiapp.Application;
             _doc = uidoc.Document;
 
-            ListFamilyTypes();
+            //ListFamilyTypes();
 
-            FindFamilyType_Wall_v2("Basic Wall: ", "Test");
+            FindFamilyType_Wall_v1("Basic Wall", "Generic - 8\"");
+            FindFamilyType_Wall_v2("Basic Wall", "Generic - 8\"");
+            FindFamilyType_Door_v1("Single-Flush", "36\" x 84\"");
 
             return Result.Succeeded;
         }
@@ -141,9 +143,11 @@ namespace MyIntroCs
 
             //Use LINQ query.
             var wTypeElems =
-                from element in wCollector
-                where element.Name.Equals(wTypeName)
-                select element;
+                from e in wCollector
+                where e.Name.Equals(wTypeName) &&
+                e.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM)
+                .AsString().Equals(wFamilyName)
+                select e;
 
             //Get the result.
             Element wType = null;
@@ -153,6 +157,11 @@ namespace MyIntroCs
             if (wTypeList.Count > 0)
             {
                 wType = wTypeList[0];
+                TaskDialog.Show("Wall", "Yeah, I found it!");
+            }
+            else
+            {
+                TaskDialog.Show("Wall", "Sorry, I don't found it!");
             }
 
             return wType;
@@ -163,8 +172,8 @@ namespace MyIntroCs
         /// <summary>
         /// Find a specific family type for a wall with a given family and type name. Use iteration.
         /// </summary>
-        /// <param name="wFamilyName"></param>
-        /// <param name="wTypeName"></param>
+        /// <param name="wFamilyName">Family name of the desired wall</param>
+        /// <param name="wTypeName">Type name of the desired wall</param>
         /// <returns></returns>
         public Element FindFamilyType_Wall_v2(string wFamilyName, string wTypeName)
         {
@@ -182,15 +191,15 @@ namespace MyIntroCs
             {
                 WallType wallType = (WallType)wTypeItr.Current;
                 //Check two names: type name and family name.
-                if ((wallType.Name == wTypeName) & (wallType.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM).AsString().Equals(wFamilyName)))
+                if ((wallType.Name == wTypeName) && (wallType.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM).AsString().Equals(wFamilyName)))
                 { 
                     wType = wallType;
-                    TaskDialog.Show("Title", "I found your wall!");
+                    TaskDialog.Show("Wall", "Yeah, I found it!");
                     break;
                 }
                 else
                 {
-                    TaskDialog.Show("Title", "I don't found your wall!");
+                    TaskDialog.Show("Wall", "Sorry, I don't found it!");
                     break;
                 }
             }
@@ -223,6 +232,11 @@ namespace MyIntroCs
             if (dTypeList.Count > 0)
             {
                 dType = dTypeList[0];
+                TaskDialog.Show("Door", "Yeah, I found it!");
+            }
+            else
+            {
+                TaskDialog.Show("Door", "Sorry, I don't found it!");
             }
 
             return dType;
@@ -279,5 +293,7 @@ namespace MyIntroCs
             return dType;
         }
         #endregion
+
+        
     }
 }
