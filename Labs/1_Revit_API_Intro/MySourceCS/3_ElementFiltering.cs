@@ -37,12 +37,20 @@ namespace MyIntroCs
             //Create a ElementType of type WallType and assign to it the value of the return of the method.
             ElementType wType = (ElementType)FindFamilyType(_doc, typeof(WallType), "Basic Wall", "Generic - 8\"", null);
             //Create a TaskDialog to show the value of the element.
-            TaskDialog.Show("Wall", $"{wType.Name}\n{wType.Category.Name}\n{wType.FamilyName}");
+            TaskDialog.Show("Wall", $"Name: {wType.Name}\nCategory: {wType.Category.Name}\nFamily: {wType.FamilyName}\nType Id: {wType.Id.IntegerValue.ToString()}");
 
             //Create a ElementType of type FamilySymbol and assign to it the value of the return of the method.
             ElementType dType = (ElementType)FindFamilyType(_doc, typeof(FamilySymbol), "Single-Flush", "36\" x 84\"", null);
             //Create a TaskDialog to show the value of the element.
-            TaskDialog.Show("Door", $"{dType.Name}\n{dType.Category.Name}\n{dType.FamilyName}");
+            TaskDialog.Show("Door", $"Name: {dType.Name}\nCategory: {dType.Category.Name}\nFamily: {dType.FamilyName}\nType Id: {dType.Id.IntegerValue.ToString()}");
+
+            ElementId idWallType = wType.Id;
+            IList<Element> walls = FindInstancesOfType(typeof(Wall), idWallType, null);
+            ShowElementList(walls, "Wall");
+
+            ElementId idDoorType = dType.Id;
+            IList<Element> doors = FindInstancesOfType(typeof(FamilyInstance), idDoorType, BuiltInCategory.OST_Doors);
+            ShowElementList(doors, "Door");
 
             return Result.Succeeded;
         }
@@ -349,6 +357,37 @@ namespace MyIntroCs
         }
         #endregion
 
+        #region FindInstancesOfType()
+        /// <summary>
+        /// Find an instance element (target) of the given type, name and category (optional).
+        /// </summary>
+        /// <param name="tType">Target type</param>
+        /// <param name="idType">Target id type</param>
+        /// <param name="tCategory">Target type name</param>
+        /// <returns></returns>
+        public IList<Element> FindInstancesOfType(Type tType, ElementId idType, Nullable<BuiltInCategory> tCategory = null)
+        {
+            //Narrow down the collector.
+            FilteredElementCollector tCollector = new FilteredElementCollector(_doc)
+                .OfClass(tType);
 
+            //If you pass value to tCategory, then it'll narrow down even more the collector.
+            if (tCategory.HasValue)
+            {
+                tCollector.OfCategory(tCategory.Value);
+            }
+
+            //Use LINQ query.
+            var tElems =
+                from e in tCollector
+                where e.get_Parameter(BuiltInParameter.SYMBOL_ID_PARAM)
+                .AsElementId().Equals(idType)
+                select e;
+
+            IList<Element> elems = tElems.ToList();
+
+            return elems;
+        }
+        #endregion
     }
 }
