@@ -34,23 +34,28 @@ namespace MyIntroCs
             //FindFamilyType_Wall_v2("Basic Wall", "Generic - 8\"");
             //FindFamilyType_Door_v1("Single-Flush", "36\" x 84\"");
 
-            //Create a ElementType of type WallType and assign to it the value of the return of the method.
-            ElementType wType = (ElementType)FindFamilyType(_doc, typeof(WallType), "Basic Wall", "Generic - 8\"", null);
-            //Create a TaskDialog to show the value of the element.
-            TaskDialog.Show("Wall", $"Name: {wType.Name}\nCategory: {wType.Category.Name}\nFamily: {wType.FamilyName}\nType Id: {wType.Id.IntegerValue.ToString()}");
+            ////Create a ElementType of type WallType and assign to it the value of the return of the method.
+            //ElementType wType = (ElementType)FindFamilyType(_doc, typeof(WallType), "Basic Wall", "Generic - 8\"", null);
+            ////Create a TaskDialog to show the value of the element.
+            //TaskDialog.Show("Wall", $"Name: {wType.Name}\nCategory: {wType.Category.Name}\nFamily: {wType.FamilyName}\nType Id: {wType.Id.IntegerValue.ToString()}");
 
-            //Create a ElementType of type FamilySymbol and assign to it the value of the return of the method.
-            ElementType dType = (ElementType)FindFamilyType(_doc, typeof(FamilySymbol), "Single-Flush", "36\" x 84\"", null);
-            //Create a TaskDialog to show the value of the element.
-            TaskDialog.Show("Door", $"Name: {dType.Name}\nCategory: {dType.Category.Name}\nFamily: {dType.FamilyName}\nType Id: {dType.Id.IntegerValue.ToString()}");
+            ////Create a ElementType of type FamilySymbol and assign to it the value of the return of the method.
+            //ElementType dType = (ElementType)FindFamilyType(_doc, typeof(FamilySymbol), "Single-Flush", "36\" x 84\"", null);
+            ////Create a TaskDialog to show the value of the element.
+            //TaskDialog.Show("Door", $"Name: {dType.Name}\nCategory: {dType.Category.Name}\nFamily: {dType.FamilyName}\nType Id: {dType.Id.IntegerValue.ToString()}");
 
-            ElementId idWallType = wType.Id;
-            IList<Element> walls = FindInstancesOfType(typeof(Wall), idWallType, null);
-            ShowElementList(walls, "Wall");
+            //ElementId idWallType = wType.Id;
+            //IList<Element> walls = FindInstancesOfType(typeof(Wall), idWallType, null);
+            //ShowElementList(walls, "Wall");
 
-            ElementId idDoorType = dType.Id;
-            IList<Element> doors = FindInstancesOfType(typeof(FamilyInstance), idDoorType, BuiltInCategory.OST_Doors);
-            ShowElementList(doors, "Door");
+            //ElementId idDoorType = dType.Id;
+            //IList<Element> doors = FindInstancesOfType(typeof(FamilyInstance), idDoorType, BuiltInCategory.OST_Doors);
+            //ShowElementList(doors, "Door");
+
+            //Create a new level and assign to it a level with the given properties.
+            Level level1 = (Level)FindElement(_doc, typeof(Level), "Level 1", null);
+            //Access and show it's proprieties.
+            ElementInfos(_doc, typeof(Level), "Level 1", null, level1);
 
             return Result.Succeeded;
         }
@@ -102,8 +107,8 @@ namespace MyIntroCs
         /// <summary>
         /// Helper function 1: Show a list of elements (walls and doors).
         /// </summary>
-        /// <param name="e">elements</param>
-        /// <param name="h">header</param>
+        /// <param name="e">List of elements to be shown</param>
+        /// <param name="h">Header of task dialog</param>
         public void ShowElementList(IList<Element> e, string h)
         {
             string s = " - Class - Category - Name (or Family: Type Name) - Id - \r\n";
@@ -387,6 +392,73 @@ namespace MyIntroCs
             IList<Element> elems = tElems.ToList();
 
             return elems;
+        }
+        #endregion
+
+        #region FindElements()
+        /// <summary>
+        /// [THIS CODE IS BROKING REVIT] Find a list of elements with the given class, name and category (optional).
+        /// </summary>
+        /// <param name="doc">Document</param>
+        /// <param name="tType">Target type</param>
+        /// <param name="tName">Target name</param>
+        /// <param name="tCategory">Target category (optional)</param>
+        /// <returns></returns>
+        public static IList<Element> FindElements(Document doc, Type tType, string tName, Nullable<BuiltInCategory> tCategory)
+        {
+            //Narrow down the collector.
+            FilteredElementCollector collector = new FilteredElementCollector(doc)
+                .OfClass(tType);
+            if (tCategory.HasValue)
+            {
+                collector.OfCategory(tCategory.Value);
+            }
+
+            //Use LINQ query.
+            var tElems =
+                from e in collector
+                where e.Name.Equals(tName)
+                select e;
+
+            return tElems.ToList();
+        }
+
+        /// <summary>
+        /// Helper function: searches elements with given class, name and category (optional)
+        /// and return the first element found.
+        /// </summary>
+        /// <param name="doc">Document</param>
+        /// <param name="tType">Target type</param>
+        /// <param name="tName">Target name</param>
+        /// <param name="tCategory">Target category (optional)</param>
+        /// <returns></returns>
+        public static Element FindElement(Document doc, Type tType, string tName, Nullable<BuiltInCategory> tCategory)
+        {
+            //Find a list  of elements using the overloaded method.
+            IList<Element> e = FindElements(doc, tType, tName, tCategory);
+
+            //Return the first one from the result.
+            if (e.Count > 0)
+            {
+                return e[0];
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="doc">Document</param>
+        /// <param name="tType">Target type</param>
+        /// <param name="tName">Target name</param>
+        /// <param name="tCategory">Target category (optional)</param>
+        /// <param name="tLevel">Target level</param>
+        public static void ElementInfos(Document doc, Type tType, string tName, Nullable<BuiltInCategory> tCategory, Level tLevel)
+        {
+            tLevel = (Level)FindElement(doc, typeof(Level), tName, null);
+
+            TaskDialog.Show("Title", $"Name: {tLevel.Name}\nGUID: {tLevel.VersionGuid}\nId: {tLevel.Id}\nSomething: {tLevel.DesignOption}");
         }
         #endregion
     }
