@@ -397,7 +397,7 @@ namespace MyIntroCs
 
         #region FindElements()
         /// <summary>
-        /// [THIS CODE IS BROKING REVIT] Find a list of elements with the given class, name and category (optional).
+        /// Find a list of elements with the given class, name and category (optional).
         /// </summary>
         /// <param name="doc">Document</param>
         /// <param name="tType">Target type</param>
@@ -447,7 +447,7 @@ namespace MyIntroCs
         }
 
         /// <summary>
-        /// 
+        /// Show elements info: Name, VersionGUID, Id and Design Option
         /// </summary>
         /// <param name="doc">Document</param>
         /// <param name="tType">Target type</param>
