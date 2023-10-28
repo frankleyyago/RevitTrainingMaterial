@@ -76,6 +76,7 @@
     <Compile Include="2_DbElement.cs" />
     <Compile Include="3_ElementFiltering.cs" />
     <Compile Include="4_ElementModification.cs" />
+    <Compile Include="5_ModelCreation.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
