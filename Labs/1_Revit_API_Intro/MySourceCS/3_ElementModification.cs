@@ -27,9 +27,14 @@ namespace MyIntroCs
             {
                 tx.Start();
 
+                //Create a element and assign to it the picked element.
                 Element e = PickedObj();
 
+                //Call a method to modify wall type.
                 ModifyElementPropertiesWall(e);
+
+                //Call a method to change the location of a wall.
+                ChangeLocationCurve(e);
 
                 tx.Commit();
             }                
@@ -81,6 +86,36 @@ namespace MyIntroCs
                 aWall.WallType = (WallType)newWallType;
                 TaskDialog.Show("Wall Changed", $"Wall Type to: {wFamilyAndTypeName}");
             }
+        }
+        #endregion
+
+        #region ChangeLocationCurve()
+        public void ChangeLocationCurve(Element e)
+        {
+            LocationCurve wLocation = (LocationCurve)e.Location;
+
+            if (e.Location is LocationCurve)
+            {
+                //Get the XYZ of start and end of e.
+                XYZ pt1 = wLocation.Curve.GetEndPoint(0);
+                XYZ pt2 = wLocation.Curve.GetEndPoint(1);
+
+                //Create new point.
+                XYZ newPt1 = new XYZ(10.0, 0.0, 0.0);
+                XYZ newPt2 = new XYZ(20.0, 0.0, 0.0);
+
+                //Create a new line bound.
+                Line newWallLine = Line.CreateBound(newPt1, newPt2);
+
+                //Change the curve.
+                wLocation.Curve = newWallLine;
+                TaskDialog.Show("Wall moved", $"Old position:\n{pt1}\n{pt2}\n\n\nNew position:\n{newPt1}\n{newPt2}");
+            }
+            else
+            {
+                TaskDialog.Show("Error", $"Selected wall have not a valid location");
+            }
+            
         }
         #endregion
     }
