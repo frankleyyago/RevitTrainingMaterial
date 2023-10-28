@@ -36,6 +36,8 @@ namespace MyIntroCs
                 //Call a method to change the location of a wall.
                 ChangeLocationCurve(e);
 
+                ModifyElementByTransformUtilsMethods(e);
+
                 tx.Commit();
             }                
 
@@ -116,6 +118,34 @@ namespace MyIntroCs
                 TaskDialog.Show("Error", $"Selected wall have not a valid location");
             }
             
+        }
+        #endregion
+
+        #region ModifyElementByTransformUtilsMethods()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e">Element to be transformed</param>
+        public void ModifyElementByTransformUtilsMethods(Element e)
+        {
+            //Create a new coordinate to move the e.
+            XYZ newPosition = new XYZ(20.0, 20.0, 0.0);
+
+            //Move e, in this case a picked wall.
+            ElementTransformUtils.MoveElement(_doc, e.Id, newPosition);
+
+            //Represent a point at the origin (0,0,0).
+            XYZ pt1 = XYZ.Zero;
+            //Represent the basis of the Z axis is the vector (0,0,1).
+            XYZ pt2 = XYZ.BasisZ;
+            //Create a new line from pt1 to pt2, in this case is a vertical line in z-axis.
+            Line axis = Line.CreateBound(pt1, pt2);
+
+            //Rotate e, in this case a picked wall.
+            ElementTransformUtils.RotateElement(_doc, e.Id, axis, Math.PI/12.0);
+
+            //Show the result.
+            TaskDialog.Show("Modify element by utils methods", "Moved: (20, 20, 0)\nRotated: 15 degrees");
         }
         #endregion
     }
