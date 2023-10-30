@@ -32,11 +32,11 @@ namespace MyIntroCs
                 //Call method to create four walls.
                 CreateWalls();
 
-                //Allow select a wall to place a door.
-                Wall pickedWall = (Wall)ElementModification.PickedObj(_uidoc, _doc);
+                //Place a door in picked wall.
+                AddDoor((Wall)ElementModification.PickedObj(_uidoc, _doc));
 
-                //Place a door in the picked wall.
-                AddDoor(pickedWall);
+                //Place a window in picked wall.
+                AddWindow((Wall)ElementModification.PickedObj(_uidoc, _doc));
 
                 tx.Commit();
             }
@@ -142,6 +142,46 @@ namespace MyIntroCs
 
             //Create a door.
             FamilyInstance aDoor = _doc.Create.NewFamilyInstance(pt, dType, hostWall, level1, StructuralType.NonStructural);
+        }
+        #endregion
+
+        #region AddWindow()
+        /// <summary>
+        /// Create a window in the middle of the wall.
+        /// </summary>
+        /// <param name="hostWall"></param>
+        public void AddWindow(Wall hostWall)
+        {
+            //Create strings with windows informations.
+            string wFamilyName = "Fixed";
+            string wTypeName = "36\" x 48\"";
+            string wFamilyAndTypeName = $"{wFamilyName} : {wTypeName}";
+            double sillHeight = 3;
+
+            //Create a new window type.
+            FamilySymbol wType = (FamilySymbol)ElementFiltering.FindFamilyType(_doc, typeof(FamilySymbol), wFamilyName, wTypeName, BuiltInCategory.OST_Windows);
+
+            if (wType == null)
+            {
+                TaskDialog.Show("Revit Intro Lab", $"Cannot find {wFamilyAndTypeName}");
+            }
+
+            //Get the start and end points of the wall.
+            LocationCurve locCurve = (LocationCurve)hostWall.Location;
+            XYZ pt1 = locCurve.Curve.GetEndPoint(0);
+            XYZ pt2 = locCurve.Curve.GetEndPoint(1);
+            //Calculate the midpoint.
+            XYZ pt = (pt1 + pt2) * 0.5;
+
+            //Set the bottom of the wall and level as reference to the window.
+            ElementId idLevel1 = hostWall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT).AsElementId();
+            Level level1 = (Level)_doc.GetElement(idLevel1);
+
+            //Create a window.
+            FamilyInstance aWindow = _doc.Create.NewFamilyInstance(pt, wType, hostWall, level1, StructuralType.NonStructural);
+
+            //Set sill height.
+            aWindow.get_Parameter(BuiltInParameter.INSTANCE_SILL_HEIGHT_PARAM).Set(sillHeight);
         }
         #endregion
     }
