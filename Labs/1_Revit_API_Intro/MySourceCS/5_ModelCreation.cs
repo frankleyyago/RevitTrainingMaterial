@@ -29,7 +29,14 @@ namespace MyIntroCs
             {
                 tx.Start();
 
+                //Call method to create four walls.
                 CreateWalls();
+
+                //Allow select a wall to place a door.
+                Wall pickedWall = (Wall)ElementModification.PickedObj(_uidoc, _doc);
+
+                //Place a door in the picked wall.
+                AddDoor(pickedWall);
 
                 tx.Commit();
             }
@@ -99,6 +106,42 @@ namespace MyIntroCs
             _doc.AutoJoinElements();
 
             return walls;
+        }
+        #endregion
+
+        #region AddDoor()
+        /// <summary>
+        /// Create a door in the middle of the wall.
+        /// </summary>
+        /// <param name="hostWall">Wall that will receive the door</param>
+        public void AddDoor(Wall hostWall)
+        {
+            //Create strings with doors informations.
+            string dFamilyName = "Single-Flush";
+            string dTypeName = "30\" x 80\"";
+            string dFamilyAndTypeName = $"{dFamilyName} : {dTypeName}";
+
+            //Create a new door type.
+            FamilySymbol dType = (FamilySymbol)ElementFiltering.FindFamilyType(_doc, typeof(FamilySymbol), dFamilyName, dTypeName, BuiltInCategory.OST_Doors);
+
+            if (dType == null)
+            {
+                TaskDialog.Show("Revit Intro Lab", $"Cannot find {dFamilyAndTypeName}");
+            }
+
+            //Get the start and end points of the wall.
+            LocationCurve locCurve = (LocationCurve)hostWall.Location;
+            XYZ pt1 = locCurve.Curve.GetEndPoint(0);
+            XYZ pt2 = locCurve.Curve.GetEndPoint(1);
+            //Calculate the midpoint.
+            XYZ pt = (pt1 + pt2) * 0.5;
+
+            //Set the bottom of the wall and level as reference to the door.
+            ElementId idLevel1 = hostWall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT).AsElementId();
+            Level level1 = (Level)_doc.GetElement(idLevel1);
+
+            //Create a door.
+            FamilyInstance aDoor = _doc.Create.NewFamilyInstance(pt, dType, hostWall, level1, StructuralType.NonStructural);
         }
         #endregion
     }

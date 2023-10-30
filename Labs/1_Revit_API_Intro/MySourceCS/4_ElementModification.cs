@@ -28,7 +28,7 @@ namespace MyIntroCs
                 tx.Start();
 
                 //Create a element and assign to it the picked element.
-                Element e = PickedObj();
+                Element e = PickedObj(_uidoc, _doc);
 
                 //Call a method to modify wall type.
                 ModifyElementPropertiesWall(e);
@@ -49,10 +49,10 @@ namespace MyIntroCs
         /// Allow the user to pick an element.
         /// </summary>
         /// <returns></returns>
-        public Element PickedObj()
+        public static Element PickedObj(UIDocument uidoc, Document doc)
         {
-            Reference pickedObj = _uidoc.Selection.PickObject(Autodesk.Revit.UI.Selection.ObjectType.Element, "Pick a wall");
-            Element e = _doc.GetElement(pickedObj);
+            Reference pickedObj = uidoc.Selection.PickObject(Autodesk.Revit.UI.Selection.ObjectType.Element, "Pick a wall");
+            Element e = doc.GetElement(pickedObj);
 
             return e;
         }
