@@ -29,14 +29,16 @@ namespace MyIntroCs
             {
                 tx.Start();
 
-                //Call method to create four walls.
-                CreateWalls();
+                ////Call method to create four walls.
+                //CreateWalls();
 
-                //Place a door in picked wall.
-                AddDoor((Wall)ElementModification.PickedObj(_uidoc, _doc));
+                ////Place a door in picked wall.
+                //AddDoor((Wall)ElementModification.PickedObj(_uidoc, _doc));
 
-                //Place a window in picked wall.
-                AddWindow((Wall)ElementModification.PickedObj(_uidoc, _doc));
+                ////Place a window in picked wall.
+                //AddWindow((Wall)ElementModification.PickedObj(_uidoc, _doc));
+
+                AddRoof(CreateWalls());
 
                 tx.Commit();
             }
@@ -184,5 +186,57 @@ namespace MyIntroCs
             aWindow.get_Parameter(BuiltInParameter.INSTANCE_SILL_HEIGHT_PARAM).Set(sillHeight);
         }
         #endregion
+
+        #region AddRoof()
+        public void AddRoof(List<Wall> w)
+        {
+            //Create string with roof informations.
+            string rFamilyName = "Basic Roof";
+            string rTypeName = "Generic - 9\"";
+            string rFamilyAndTypeName = $"{rFamilyName} : {rTypeName}";
+
+            //Create a new roof type.
+            RoofType rType = (RoofType)ElementFiltering.FindFamilyType(_doc, typeof(RoofType), rFamilyName, rTypeName, null);
+
+            if (rType == null)
+            {
+                TaskDialog.Show("Revit Intro Lab", $"Cannot find {rFamilyAndTypeName}");
+            }
+
+            double wThickness = w[0].Width;
+            double dt = wThickness * 0.5;
+            List<XYZ> dts = new List<XYZ>(5);
+            dts.Add(new XYZ(-dt, -dt, 0.0));
+            dts.Add(new XYZ(dt, -dt, 0.0));
+            dts.Add(new XYZ(dt, dt, 0.0));
+            dts.Add(new XYZ(-dt, dt, 0.0));
+            dts.Add(dts[0]);
+
+            CurveArray footPrint = new CurveArray();
+            for (int i = 0; i <= 3; i++)
+            {
+                LocationCurve locCurve = (LocationCurve)w[i].Location;
+                XYZ pt1 = locCurve.Curve.GetEndPoint(0) + dts[i];
+                XYZ pt2 = locCurve.Curve.GetEndPoint(1) + dts[i];
+                Line line = Line.CreateBound(pt1, pt2);
+                footPrint.Append(line);
+            }
+
+            ElementId idLevel2 = w[0].get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE).AsElementId();
+            Level level2 = (Level)_doc.GetElement(idLevel2);
+
+            ModelCurveArray mapping;
+
+            FootPrintRoof aRoof = _doc.Create.NewFootPrintRoof(footPrint, level2, rType, out mapping);
+
+            //Setting the slope.
+            foreach (ModelCurve modelCurve in mapping)
+            {
+                aRoof.set_DefinesSlope(modelCurve, true);
+                aRoof.set_SlopeAngle(modelCurve, 0.5);
+            }
+        }
+        #endregion
+
     }
 }
