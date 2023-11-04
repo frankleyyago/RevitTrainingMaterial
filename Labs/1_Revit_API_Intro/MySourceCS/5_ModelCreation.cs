@@ -29,16 +29,7 @@ namespace MyIntroCs
             {
                 tx.Start();
 
-                ////Call method to create four walls.
-                //CreateWalls();
-
-                ////Place a door in picked wall.
-                //AddDoor((Wall)ElementModification.PickedObj(_uidoc, _doc));
-
-                ////Place a window in picked wall.
-                //AddWindow((Wall)ElementModification.PickedObj(_uidoc, _doc));
-
-                AddRoof(CreateWalls());
+                CreateHouse();
 
                 tx.Commit();
             }
@@ -54,7 +45,7 @@ namespace MyIntroCs
         public List<Wall> CreateWalls()
         {
             //Dimensions of the house.
-            double width = (10.0);
+            double width = (25.0);
             double depth = (50.0);
 
             //Create a new level instance and assign to it the value of the filter result.
@@ -126,6 +117,12 @@ namespace MyIntroCs
             //Create a new door type.
             FamilySymbol dType = (FamilySymbol)ElementFiltering.FindFamilyType(_doc, typeof(FamilySymbol), dFamilyName, dTypeName, BuiltInCategory.OST_Doors);
 
+            //Activate symbols that are not placed in the model.
+            if (!dType.IsActive)
+            {
+                dType.Activate();
+            }
+
             if (dType == null)
             {
                 TaskDialog.Show("Revit Intro Lab", $"Cannot find {dFamilyAndTypeName}");
@@ -163,6 +160,12 @@ namespace MyIntroCs
             //Create a new window type.
             FamilySymbol wType = (FamilySymbol)ElementFiltering.FindFamilyType(_doc, typeof(FamilySymbol), wFamilyName, wTypeName, BuiltInCategory.OST_Windows);
 
+            //Activate symbols that are not placed in the model.
+            if (!wType.IsActive)
+            {
+                wType.Activate();
+            }
+
             if (wType == null)
             {
                 TaskDialog.Show("Revit Intro Lab", $"Cannot find {wFamilyAndTypeName}");
@@ -188,6 +191,10 @@ namespace MyIntroCs
         #endregion
 
         #region AddRoof()
+        /// <summary>
+        /// Create a roof.
+        /// </summary>
+        /// <param name="w">walls list</param>
         public void AddRoof(List<Wall> w)
         {
             //Create string with roof informations.
@@ -198,13 +205,15 @@ namespace MyIntroCs
             //Create a new roof type.
             RoofType rType = (RoofType)ElementFiltering.FindFamilyType(_doc, typeof(RoofType), rFamilyName, rTypeName, null);
 
+            //In case roof information is missing.
             if (rType == null)
             {
                 TaskDialog.Show("Revit Intro Lab", $"Cannot find {rFamilyAndTypeName}");
             }
 
+            //Create roof footprint.
             double wThickness = w[0].Width;
-            double dt = wThickness * 0.5;
+            double dt = wThickness * 3;
             List<XYZ> dts = new List<XYZ>(5);
             dts.Add(new XYZ(-dt, -dt, 0.0));
             dts.Add(new XYZ(dt, -dt, 0.0));
@@ -212,20 +221,23 @@ namespace MyIntroCs
             dts.Add(new XYZ(-dt, dt, 0.0));
             dts.Add(dts[0]);
 
+            //Set the profile from four walls.
             CurveArray footPrint = new CurveArray();
             for (int i = 0; i <= 3; i++)
             {
                 LocationCurve locCurve = (LocationCurve)w[i].Location;
                 XYZ pt1 = locCurve.Curve.GetEndPoint(0) + dts[i];
-                XYZ pt2 = locCurve.Curve.GetEndPoint(1) + dts[i];
+                XYZ pt2 = locCurve.Curve.GetEndPoint(1) + dts[i + 1];
                 Line line = Line.CreateBound(pt1, pt2);
                 footPrint.Append(line);
             }
 
+            //Get the level.
             ElementId idLevel2 = w[0].get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE).AsElementId();
             Level level2 = (Level)_doc.GetElement(idLevel2);
 
-            ModelCurveArray mapping;
+            //Footprint to model curve mapping.
+            ModelCurveArray mapping = new ModelCurveArray();
 
             FootPrintRoof aRoof = _doc.Create.NewFootPrintRoof(footPrint, level2, rType, out mapping);
 
@@ -235,6 +247,26 @@ namespace MyIntroCs
                 aRoof.set_DefinesSlope(modelCurve, true);
                 aRoof.set_SlopeAngle(modelCurve, 0.5);
             }
+        }
+        #endregion
+
+        #region CreateHouse()
+        public void CreateHouse()
+        {
+            //Create four walls.
+            List<Wall> w = CreateWalls();
+
+            //Create a doors in first wall.
+            AddDoor(w[0]);
+
+            //Create a windows in all other walls.
+            for (int i = 1; i <= 3; i++)
+            {
+                AddWindow(w[i]);
+            }
+
+            //Create roof.
+            AddRoof(w);
         }
         #endregion
 
