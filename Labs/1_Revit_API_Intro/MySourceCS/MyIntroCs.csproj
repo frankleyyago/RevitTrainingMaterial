@@ -77,8 +77,8 @@
     <Compile Include="3_ElementFiltering.cs" />
     <Compile Include="4_ElementModification.cs" />
     <Compile Include="5_ModelCreation.cs" />
+    <Compile Include="6_ExtensibleStorage.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

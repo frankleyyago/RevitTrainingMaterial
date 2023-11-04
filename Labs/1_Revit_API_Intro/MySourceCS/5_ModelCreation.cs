@@ -251,6 +251,9 @@ namespace MyIntroCs
         #endregion
 
         #region CreateHouse()
+        /// <summary>
+        /// Create a house.
+        /// </summary>
         public void CreateHouse()
         {
             //Create four walls.
