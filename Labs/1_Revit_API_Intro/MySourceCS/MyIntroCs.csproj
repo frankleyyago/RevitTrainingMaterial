@@ -90,16 +90,11 @@
     <Content Include="Resources\Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Utilities\PostbuildEvent.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo Configuration: $(Configuration)
-if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
-copy "$(TargetDir)$(TargetName).dll" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
-copy "$(TargetDir)$(TargetName).pdb" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
-copy "$(TargetDir)\Utilities\*.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2023"
-
-if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"
-copy "$(TargetDir)\Resources\*" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

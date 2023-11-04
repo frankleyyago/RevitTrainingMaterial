@@ -1,0 +1,8 @@
+﻿echo Configuration: $(Configuration)
+if not exist "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)" mkdir "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).dll" "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).pdb" "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)\Utilities\*.addin" "%APPDATA%\Autodesk\Revit\Addins\2023"
+
+if not exist "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources" mkdir "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"
+copy "$(TargetDir)\Resources\*" "%APPDATA%\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"
