@@ -34,9 +34,11 @@
     <Reference Include="PresentationCore" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2023\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2023\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,5 +60,20 @@
       <Name>IntroCs</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="AdnpUiCs.addin">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo Configuration: $(Configuration)
+if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).dll" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).pdb" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)*.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2023"
+
+if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"
+copy "$(SolutionDir)\$(SolutionName)\Resources\*" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -59,7 +59,7 @@ namespace MyUiCs
                 TaskDialog.Show("UIRibbon", string.Format($"No image folder name {_imageFolderName} found in the parent directories of {dir}"));
             }
 
-            return Result.Succeeded;
+            return Result.Failed;
         }
 
         #region FindFolderInParents()
@@ -103,12 +103,39 @@ namespace MyUiCs
         }
         #endregion
 
+        #region AddRibbonSampler()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
         private void AddRibbonSampler(UIControlledApplication app)
         {
             app.CreateRibbonTab("Ribbon Sampler");
 
             RibbonPanel panel = app.CreateRibbonPanel("Ribbon Sampler", "Ribbon Sampler");
         }
+        #endregion
+
+        #region AddPushButton()
+        /// <summary>
+        /// Create a button to the panel.
+        /// </summary>
+        /// <param name="panel"></param>
+        public void AddPushButton(RibbonPanel panel)
+        {
+            //Set information about the button command.
+            PushButtonData pushButtonDataHello = new PushButtonData("PushButtonHello", "Hello World", _introLabPath, $"{_introLabName}.HelloWorld");
+
+            //Add a button to the panel.
+            PushButton pushButtonHello = panel.AddItem(pushButtonDataHello) as PushButton;
+
+            //Add an icon.
+            pushButtonDataHello.LargeImage = newBitmapImage("ImgHelloWorld.png");
+
+            //Add a tooltip.
+            pushButtonDataHello.ToolTip = "Simple push button";
+        }
+        #endregion
 
     }
 
