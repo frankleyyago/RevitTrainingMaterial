@@ -55,15 +55,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\1_Revit_API_Intro\SourceCS\IntroCs.csproj">
-      <Project>{529f0e1a-882d-4650-a26a-54425b0772c5}</Project>
-      <Name>IntroCs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AdnpUiCs.addin">
+    <None Include="Utilities\MyUiCs.addin">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\1_Revit_API_Intro\MySourceCS\MyIntroCs.csproj">
+      <Project>{0171d972-af24-4328-a5b5-b3be4cb3e199}</Project>
+      <Name>MyIntroCs</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

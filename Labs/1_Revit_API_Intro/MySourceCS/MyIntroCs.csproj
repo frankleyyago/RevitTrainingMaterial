@@ -72,13 +72,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="1_HelloWorld.cs" />
-    <Compile Include="2_DbElement.cs" />
-    <Compile Include="3_ElementFiltering.cs" />
-    <Compile Include="4_ElementModification.cs" />
-    <Compile Include="5_ModelCreation.cs" />
-    <Compile Include="6_ExtensibleStorage.cs" />
-    <Compile Include="7_SharedParameter.cs" />
+    <Compile Include="Commands\1_HelloWorld.cs" />
+    <Compile Include="Commands\2_DbElement.cs" />
+    <Compile Include="Commands\3_ElementFiltering.cs" />
+    <Compile Include="Commands\4_ElementModification.cs" />
+    <Compile Include="Commands\5_ModelCreation.cs" />
+    <Compile Include="Commands\6_ExtensibleStorage.cs" />
+    <Compile Include="Commands\7_SharedParameter.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,7 +95,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo Configuration: $(Configuration)
+if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).dll" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)$(TargetName).pdb" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
+copy "$(TargetDir)\Utilities\*.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2023"
+
+if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"
+copy "$(TargetDir)\Resources\*" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"</PostBuildEvent>
   </PropertyGroup>
 </Project>
