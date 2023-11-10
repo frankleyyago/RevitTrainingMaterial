@@ -71,9 +71,9 @@
 if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
 copy "$(TargetDir)$(TargetName).dll" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
 copy "$(TargetDir)$(TargetName).pdb" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)"
-copy "$(TargetDir)*.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2023"
+copy "$(TargetDir)\Utilities\*.addin" "%25APPDATA%25\Autodesk\Revit\Addins\2023"
 
 if not exist "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources" mkdir "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"
-copy "$(SolutionDir)\$(SolutionName)\Resources\*" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"</PostBuildEvent>
+copy "$(TargetDir)\Resources\*" "%25APPDATA%25\Autodesk\Revit\Addins\2023\$(ProjectName)\Resources"</PostBuildEvent>
   </PropertyGroup>
 </Project>
