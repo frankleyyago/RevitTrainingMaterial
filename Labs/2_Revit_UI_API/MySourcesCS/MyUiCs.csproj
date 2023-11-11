@@ -55,15 +55,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Utilities\MyUiCs.addin">
-      <SubType>Designer</SubType>
-    </None>
+    <Folder Include="Commands\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Utilities\MyUiCs.addin" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\1_Revit_API_Intro\MySourceCS\MyIntroCs.csproj">
       <Project>{0171d972-af24-4328-a5b5-b3be4cb3e199}</Project>
       <Name>MyIntroCs</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Utilities\PostbuildEvent.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

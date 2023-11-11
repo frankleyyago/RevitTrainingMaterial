@@ -40,7 +40,7 @@ namespace MyIntroCs
             RibbonPanel panel = RibbonPanel(application);
             string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin2", thisAssemblyPath, "MyIntroCs.1_HelloWorld"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin2", thisAssemblyPath, "MyIntroCs.HelloWorld"))
                 is PushButton button1)
             {
                 button1.ToolTip = "My First Plugin";
@@ -53,7 +53,7 @@ namespace MyIntroCs
 
             panel.AddSeparator();
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin2", "FirstPlugin3", thisAssemblyPath, "MyIntroCs.2_DbElement"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin2", "FirstPlugin3", thisAssemblyPath, "MyIntroCs.DbElement"))
                 is PushButton button2)
             {
                 button2.ToolTip = "My First Plugin";
@@ -64,7 +64,7 @@ namespace MyIntroCs
 
             }
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin3", "FirstPlugin4", thisAssemblyPath, "MyIntroCs.Command"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin3", "FirstPlugin4", thisAssemblyPath, "MyIntroCs.ModelCreation"))
                 is PushButton button3)
             {
                 button3.ToolTip = "My First Plugin";

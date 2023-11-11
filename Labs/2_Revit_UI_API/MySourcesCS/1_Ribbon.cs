@@ -19,7 +19,7 @@ namespace MyUiCs
     public class UIRibbon : IExternalApplication
     {
         //Assembly name and namespace of external command.
-        const string _introLabName = "IntroCs";
+        const string _introLabName = "MyIntroCs";
         const string _uiLabName = "UiCs";
         const string _dllExtension = ".dll";
 
