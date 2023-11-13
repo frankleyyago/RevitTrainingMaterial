@@ -52,23 +52,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="1_Ribbon.cs" />
+    <Compile Include="Commands\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Resources\" />
+    <None Include="Utilities\MyUiCs.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Utilities\MyUiCs.addin" />
+    <Content Include="Resources\Icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Utilities\PostbuildEvent.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\1_Revit_API_Intro\MySourceCS\MyIntroCs.csproj">
       <Project>{0171d972-af24-4328-a5b5-b3be4cb3e199}</Project>
       <Name>MyIntroCs</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Utilities\PostbuildEvent.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

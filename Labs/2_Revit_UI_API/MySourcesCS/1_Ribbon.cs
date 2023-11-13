@@ -19,8 +19,9 @@ namespace MyUiCs
     public class UIRibbon : IExternalApplication
     {
         //Assembly name and namespace of external command.
+        const string _introLabFolder = "MyIntroCs\\";
         const string _introLabName = "MyIntroCs";
-        const string _uiLabName = "UiCs";
+        const string _uiLabName = "MyUiCs";
         const string _dllExtension = ".dll";
 
         //Name of subdirectory containing images.
@@ -43,7 +44,7 @@ namespace MyUiCs
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             //External command path.
-            _introLabPath = Path.Combine(dir, _introLabName + _dllExtension);
+            _introLabPath = Path.Combine(dir, _introLabFolder + _introLabName + _dllExtension);
 
             if (!File.Exists(_introLabPath))
             {
@@ -59,7 +60,9 @@ namespace MyUiCs
                 TaskDialog.Show("UIRibbon", string.Format($"No image folder name {_imageFolderName} found in the parent directories of {dir}"));
             }
 
-            return Result.Failed;
+            AddRibbonSampler(application);
+
+            return Result.Succeeded;
         }
 
         #region FindFolderInParents()
@@ -124,7 +127,7 @@ namespace MyUiCs
         public void AddPushButton(RibbonPanel panel)
         {
             //Set information about the button command.
-            PushButtonData pushButtonDataHello = new PushButtonData("PushButtonHello", "Hello World", _introLabPath, $"{_introLabName}.HelloWorld");
+            PushButtonData pushButtonDataHello = new PushButtonData("PushButtonHello", "Hello World", _introLabPath, $"{_introLabName}.HelloWorldFull");
 
             //Add a button to the panel.
             PushButton pushButtonHello = panel.AddItem(pushButtonDataHello) as PushButton;
@@ -134,6 +137,27 @@ namespace MyUiCs
 
             //Add a tooltip.
             pushButtonDataHello.ToolTip = "Simple push button";
+        }
+        #endregion
+
+        #region AddSplitButton()
+        public void AddSplitButton(RibbonPanel panel)
+        {
+            PushButtonData pushButtonData1 = new PushButtonData("SplitCommandData", "Command Data", _introLabPath, _introLabName + ".CommandData");
+            pushButtonData1.LargeImage = newBitmapImage("ImgHelloWorld.png");
+
+            PushButtonData pushButtonData2 = new PushButtonData("SplitDbElement", "DB Element", _introLabPath, _introLabName + ".DbElement");
+            pushButtonData2.LargeImage = newBitmapImage("ImgHelloWorld.png");
+
+            PushButtonData pushButtonData3 = new PushButtonData("SplitElementFiltering", "ElementFiltering", _introLabPath, _introLabName + ".ElementFiltering");
+            pushButtonData3.LargeImage = newBitmapImage("ImgHelloWorld.png");
+
+            SplitButtonData splitBtnData = new SplitButtonData("SplitButton", "Split button");
+
+            SplitButton splitBtn = panel.AddItem(splitBtnData) as SplitButton;
+            splitBtn.AddPushButton(pushButtonData1);
+            splitBtn.AddPushButton(pushButtonData2);
+            splitBtn.AddPushButton(pushButtonData3);
         }
         #endregion
 
