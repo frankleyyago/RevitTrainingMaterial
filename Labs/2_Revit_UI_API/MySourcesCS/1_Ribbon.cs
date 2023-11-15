@@ -44,7 +44,7 @@ namespace MyUiCs
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             //External command path.
-            _introLabPath = Path.Combine(dir, _introLabFolder + _introLabName + _dllExtension);
+            _introLabPath = Path.Combine(dir, "MyIntroCs\\MyIntroCs.dll");
 
             if (!File.Exists(_introLabPath))
             {
