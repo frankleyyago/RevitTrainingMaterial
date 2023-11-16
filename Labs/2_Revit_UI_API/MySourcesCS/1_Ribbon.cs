@@ -12,6 +12,7 @@ using System.Xml;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Autodesk.Revit.UI.Events;
 #endregion
 
 namespace MyUiCs
@@ -19,7 +20,6 @@ namespace MyUiCs
     public class UIRibbon : IExternalApplication
     {
         //Assembly name and namespace of external command.
-        const string _introLabFolder = "MyIntroCs\\";
         const string _introLabName = "MyIntroCs";
         const string _uiLabName = "MyUiCs";
         const string _dllExtension = ".dll";
@@ -44,7 +44,7 @@ namespace MyUiCs
             string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             //External command path.
-            _introLabPath = Path.Combine(dir, "MyIntroCs\\MyIntroCs.dll");
+            _introLabPath = Path.Combine(dir, $"{_introLabName}\\{_introLabName}{_dllExtension}");
 
             if (!File.Exists(_introLabPath))
             {
@@ -158,6 +158,53 @@ namespace MyUiCs
             splitBtn.AddPushButton(pushButtonData1);
             splitBtn.AddPushButton(pushButtonData2);
             splitBtn.AddPushButton(pushButtonData3);
+        }
+        #endregion
+
+        #region AddComboBox()
+        public void AddComboBox(RibbonPanel panel)
+        {
+            //Create five combo box members with two groups.
+            ComboBoxMemberData comboBoxMemberData1 = new ComboBoxMemberData("ComboCommandData", "Command Data");
+            comboBoxMemberData1.Image = newBitmapImage("Basics.ico");
+            comboBoxMemberData1.GroupName = "DB Basics";
+            
+            ComboBoxMemberData comboBoxMemberData2 = new ComboBoxMemberData("ComboDbElement", "DB Element");
+            comboBoxMemberData2.Image = newBitmapImage("Basics.ico");
+            comboBoxMemberData2.GroupName = "DB Basics";
+
+            ComboBoxMemberData comboBoxMemberData3 = new ComboBoxMemberData("ComboElementFiltering", "Filtering");
+            comboBoxMemberData3.Image = newBitmapImage("Basics.ico");
+            comboBoxMemberData3.GroupName = "DB Basics";
+
+            ComboBoxMemberData comboBoxMemberData4 = new ComboBoxMemberData("ComboElementModification", "Modify");
+            comboBoxMemberData4.Image = newBitmapImage("Basics.ico");
+            comboBoxMemberData4.GroupName = "Modeling";
+
+            ComboBoxMemberData comboBoxMemberData5 = new ComboBoxMemberData("ComboModelCreation", "Create");
+            comboBoxMemberData5.Image = newBitmapImage("Basics.ico");
+            comboBoxMemberData5.GroupName = "Modeling";
+
+            //Make a combo box
+            ComboBoxData comboBxData = new ComboBoxData("ComboBox");
+            ComboBox comboBx = panel.AddItem(comboBxData) as ComboBox;
+            comboBx.ToolTip = "Select an Option";
+            comboBx.LongDescription = "Select a  command you want to run";
+            comboBx.AddItem(comboBoxMemberData1);
+            comboBx.AddItem(comboBoxMemberData2);
+            comboBx.AddItem(comboBoxMemberData3);
+            comboBx.AddItem(comboBoxMemberData4);
+            comboBx.AddItem(comboBoxMemberData5);
+
+            comboBx.CurrentChanged += new EventHandler<Autodesk.Revit.UI.Events.ComboBoxCurrentChangedEventArgs>(comboBx_currentChanged);
+        }
+
+        private void comboBx_currentChanged(object sender, ComboBoxCurrentChangedEventArgs e)
+        {
+            // Cast sender as TextBox to retrieve text value
+            ComboBox combodata = sender as ComboBox;
+            ComboBoxMember member = combodata.Current;
+            TaskDialog.Show("Combobox Selection", $"Your new selection: {member.ItemText}");
         }
         #endregion
 
