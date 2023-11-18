@@ -21,40 +21,34 @@ namespace MyUiCs
     public class UIRibbon : IExternalApplication
     {
         //Assembly name and namespace of external command.
-        const string _introLabName = "MyUiCs";
-        const string _uiLabName = "MyUiCs";
+        const string _myUiCsName = "MyUiCs";
         const string _dllExtension = ".dll";
 
         //Name of subdirectory containing images.
-        const string _imageFolderName = "Images";
+        const string _imageFolderName = "Resources";
 
         //Location of external command dll.
-        string _introLabPath;
+        string _myUiCsPath;
 
         //Location of images for icons.
         string _imageFolder;
 
-        public Result OnShutdown(UIControlledApplication application)
+        public Result OnShutdown(UIControlledApplication app)
         {
             return Result.Succeeded;
         }
 
-        public Result OnStartup(UIControlledApplication application)
+        public Result OnStartup(UIControlledApplication app)
         {
             //External application directory.
             string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             //External command path.
-            _introLabPath = Path.Combine(dir, $"{_introLabName}{_dllExtension}");
+            _myUiCsPath = Path.Combine(dir, $"{_myUiCsName}{_dllExtension}");
 
-            if (!File.Exists(_introLabPath))
+            if (!File.Exists(_myUiCsPath))
             {
-                TaskDialog.Show("UIRibbon", $"External command assembly not found: {_introLabPath}");
-
-                TaskDialog taskDialog = new TaskDialog("UIRibbon");
-                taskDialog.MainInstruction = "External command assembly not found";
-                taskDialog.MainContent = $"Path: {_introLabPath}";
-                taskDialog.Show();
+                TaskDialog.Show("UIRibbon", $"External command assembly not found: {_myUiCsPath}");
 
                 return Result.Failed;
             }
@@ -67,7 +61,7 @@ namespace MyUiCs
                 TaskDialog.Show("UIRibbon", string.Format($"No image folder name {_imageFolderName} found in the parent directories of {dir}"));
             }
 
-            AddRibbonSampler(application);
+            AddRibbonSampler(app);
 
             return Result.Succeeded;
         }
@@ -120,9 +114,15 @@ namespace MyUiCs
         /// <param name="app"></param>
         private void AddRibbonSampler(UIControlledApplication app)
         {
-            app.CreateRibbonTab("Ribbon Sampler");
+            app.CreateRibbonTab("MyUiCs");
 
-            RibbonPanel panel = app.CreateRibbonPanel("Ribbon Sampler", "Ribbon Sampler");
+            RibbonPanel panel = app.CreateRibbonPanel("MyUiCs", "Ribbon Sampler");
+
+            AddPushButton(panel);
+
+            AddSplitButton(panel);
+
+            AddComboBox(panel);
         }
         #endregion
 
@@ -130,33 +130,37 @@ namespace MyUiCs
         /// <summary>
         /// Create a button to the panel.
         /// </summary>
-        /// <param name="panel"></param>
+        /// <param name="panel">Panel to host button.</param>
         public void AddPushButton(RibbonPanel panel)
         {
             //Set information about the button command.
-            PushButtonData pushButtonDataHello = new PushButtonData("PushButtonHello", "Hello World", _introLabPath, $"{_introLabName}.HelloWorldFull");
+            PushButtonData pushButtonDataHello = new PushButtonData("PushButtonHello", "Hello World", _myUiCsPath, $"{_myUiCsName}.HelloWorldFull");
 
             //Add a button to the panel.
             PushButton pushButtonHello = panel.AddItem(pushButtonDataHello) as PushButton;
 
             //Add an icon.
-            pushButtonDataHello.LargeImage = newBitmapImage("ImgHelloWorld.png");
+            pushButtonHello.LargeImage = newBitmapImage("Icon.ico");
 
             //Add a tooltip.
-            pushButtonDataHello.ToolTip = "Simple push button";
+            pushButtonHello.ToolTip = "Simple push button";
         }
         #endregion
 
         #region AddSplitButton()
+        /// <summary>
+        /// Create a split button that group buttons together.
+        /// </summary>
+        /// <param name="panel">Panel to host split button.</param>
         public void AddSplitButton(RibbonPanel panel)
         {
-            PushButtonData pushButtonData1 = new PushButtonData("SplitCommandData", "Command Data", _introLabPath, _introLabName + ".CommandData");
+            PushButtonData pushButtonData1 = new PushButtonData("SplitCommandData", "Command Data", _myUiCsPath, $"{_myUiCsName}.CommandData");
             pushButtonData1.LargeImage = newBitmapImage("ImgHelloWorld.png");
 
-            PushButtonData pushButtonData2 = new PushButtonData("SplitDbElement", "DB Element", _introLabPath, _introLabName + ".DbElement");
+            PushButtonData pushButtonData2 = new PushButtonData("SplitDbElement", "DB Element", _myUiCsPath, $"{_myUiCsName}.DbElement");
             pushButtonData2.LargeImage = newBitmapImage("ImgHelloWorld.png");
 
-            PushButtonData pushButtonData3 = new PushButtonData("SplitElementFiltering", "ElementFiltering", _introLabPath, _introLabName + ".ElementFiltering");
+            PushButtonData pushButtonData3 = new PushButtonData("SplitElementFiltering", "ElementFiltering", _myUiCsPath, $"{_myUiCsName}.ElementFiltering");
             pushButtonData3.LargeImage = newBitmapImage("ImgHelloWorld.png");
 
             SplitButtonData splitBtnData = new SplitButtonData("SplitButton", "Split button");

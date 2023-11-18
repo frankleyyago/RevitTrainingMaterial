@@ -87,7 +87,7 @@ namespace MyIntroCs
         /// <returns></returns>
         public RibbonPanel RibbonPanel(UIControlledApplication a)
         {
-            string tab = "LabTab";
+            string tab = "MyIntroCs";
 
             RibbonPanel ribbonPanel = null;
 
@@ -102,7 +102,7 @@ namespace MyIntroCs
 
             try
             {
-                RibbonPanel panel = a.CreateRibbonPanel(tab, "LabTab");
+                RibbonPanel panel = a.CreateRibbonPanel(tab, "MyIntroCs");
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace MyIntroCs
             }
 
             List<RibbonPanel> panels = a.GetRibbonPanels(tab);
-            foreach (RibbonPanel p in panels.Where(p => p.Name == "LabTab"))
+            foreach (RibbonPanel p in panels.Where(p => p.Name == "MyIntroCs"))
             {
                 ribbonPanel = p;
             }
