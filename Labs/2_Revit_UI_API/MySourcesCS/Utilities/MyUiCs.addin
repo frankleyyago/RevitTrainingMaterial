@@ -12,4 +12,15 @@
 		<VendorDescription>github.com/frankleyyago</VendorDescription>
 		<VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
 	</AddIn>
+
+	<AddIn Type="Application">
+		<Name>MyRevitCommands</Name>
+		<Assembly>MyUiCs/MyUiCs.dll</Assembly>
+		<AddInId>69B7783E-BA48-49B0-AB60-F90E8DCBF786</AddInId>
+		<FullClassName>MyUiCs.App</FullClassName>
+		<Text>App</Text>
+		<Description>Create a tab and buttons</Description>
+		<VendorId>Frankleyyago</VendorId>
+		<VendorDescription>github.com/frankleyyago</VendorDescription>
+	</AddIn>
 </RevitAddIns>

@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI.Events;
+using System.Reflection;
 #endregion
 
 namespace MyUiCs
@@ -20,7 +21,7 @@ namespace MyUiCs
     public class UIRibbon : IExternalApplication
     {
         //Assembly name and namespace of external command.
-        const string _introLabName = "MyIntroCs";
+        const string _introLabName = "MyUiCs";
         const string _uiLabName = "MyUiCs";
         const string _dllExtension = ".dll";
 
@@ -41,14 +42,20 @@ namespace MyUiCs
         public Result OnStartup(UIControlledApplication application)
         {
             //External application directory.
-            string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             //External command path.
-            _introLabPath = Path.Combine(dir, $"{_introLabName}\\{_introLabName}{_dllExtension}");
+            _introLabPath = Path.Combine(dir, $"{_introLabName}{_dllExtension}");
 
             if (!File.Exists(_introLabPath))
             {
                 TaskDialog.Show("UIRibbon", $"External command assembly not found: {_introLabPath}");
+
+                TaskDialog taskDialog = new TaskDialog("UIRibbon");
+                taskDialog.MainInstruction = "External command assembly not found";
+                taskDialog.MainContent = $"Path: {_introLabPath}";
+                taskDialog.Show();
+
                 return Result.Failed;
             }
 
