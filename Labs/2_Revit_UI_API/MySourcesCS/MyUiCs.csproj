@@ -63,6 +63,7 @@
     <Compile Include="Commands\5_ModelCreation.cs" />
     <Compile Include="Commands\6_ExtensibleStorage.cs" />
     <Compile Include="Commands\7_SharedParameter.cs" />
+    <Compile Include="Commands\8_Selection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
