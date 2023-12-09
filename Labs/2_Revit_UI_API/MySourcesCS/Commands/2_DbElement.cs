@@ -33,7 +33,7 @@ namespace MyUiCs
             Element e = _doc.GetElement(r);
 
             //1) Call a method to show infos.
-            ShowBasicElementInfo(e);
+            ShowBasicElementInfo(_doc, e);
 
             //2) Call a method to identify element type.
             IdentifyElement(e);
@@ -64,7 +64,7 @@ namespace MyUiCs
         /// Show basic information about the given element.
         /// <param name="e"></param>
         /// </summary>
-        public void ShowBasicElementInfo(Element e)
+        public static void ShowBasicElementInfo(Document doc, Element e)
         {
             //Element infos
             string s = "You picked:\n";
@@ -75,7 +75,7 @@ namespace MyUiCs
 
             //Type info
             ElementId elemTypeId = e.GetTypeId();
-            ElementType elemType = (ElementType)_doc.GetElement(elemTypeId);
+            ElementType elemType = (ElementType)doc.GetElement(elemTypeId);
 
             s += $"It's ElementType:\n";
             s += $"  Class name = {elemType.GetType().Name}\n";

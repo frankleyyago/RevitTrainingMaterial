@@ -20,21 +20,27 @@ namespace MyUiCs
         //Member variables.
         UIApplication _uiapp;
         UIDocument _uidoc;
+        Document _doc;
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             _uiapp = commandData.Application;
             _uidoc = _uiapp.ActiveUIDocument;
+            _doc = _uidoc.Document;            
 
+            //Show a pre selected element list.
             ICollection<ElementId> selectedElementIds = _uidoc.Selection.GetElementIds();
             ShowElementList(selectedElementIds, "Pre-selection: ");
+
+            //Show info of selected element.
+            PickMethod_PickObject();
 
             return Result.Succeeded;
         }
 
         #region ShowElementList()
         /// <summary>
-        /// Describe method
+        /// Show a list of pre selected elements
         /// </summary>
         /// <param name="eIds">Elements Id</param>
         /// <param name="h">Header</param>
@@ -87,6 +93,20 @@ namespace MyUiCs
             }
 
             return $"({pt.X.ToString("F2")}, {pt.Y.ToString("F2")}, {pt.Z.ToString("F2")})";
+        }
+        #endregion
+
+        #region PickMethod_PickObject()
+        /// <summary>
+        /// Show basic selected element info.
+        /// </summary>
+        public void PickMethod_PickObject()
+        {
+            Reference r = _uidoc.Selection.PickObject(ObjectType.Element, "Select one element");
+
+            Element e = _uidoc.Document.GetElement(r);
+
+            DbElement.ShowBasicElementInfo(_doc, e);
         }
         #endregion
     }
