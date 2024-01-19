@@ -26,14 +26,17 @@ namespace MyUiCs
         {
             _uiapp = commandData.Application;
             _uidoc = _uiapp.ActiveUIDocument;
-            _doc = _uidoc.Document;            
+            _doc = _uidoc.Document;
 
-            //Show a pre selected element list.
-            ICollection<ElementId> selectedElementIds = _uidoc.Selection.GetElementIds();
-            ShowElementList(selectedElementIds, "Pre-selection: ");
+            ////Show a pre selected element list.
+            //ICollection<ElementId> selectedElementIds = _uidoc.Selection.GetElementIds();
+            //ShowElementList(selectedElementIds, "Pre-selection: ");
 
-            //Show info of selected element.
-            PickMethod_PickObject();
+            ////Show info of selected element.
+            //PickMethod_PickObject();
+
+            //Show info of several selected elements
+            PickMethod_PickObjects();
 
             return Result.Succeeded;
         }
@@ -107,6 +110,21 @@ namespace MyUiCs
             Element e = _uidoc.Document.GetElement(r);
 
             DbElement.ShowBasicElementInfo(_doc, e);
+        }
+        #endregion
+
+        #region PickMethod_PickObjects()
+        public void PickMethod_PickObjects()
+        {
+            IList<Reference> refs = _uidoc.Selection.PickObjects(ObjectType.Element, "Select multiples elements");
+
+            IList<ElementId> elemIds = new List<ElementId>();
+            foreach (Reference r in refs)
+            {
+                elemIds.Add(r.ElementId);
+            }
+
+            ShowElementList(elemIds, "Pick Objects");
         }
         #endregion
     }
