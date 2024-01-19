@@ -35,8 +35,11 @@ namespace MyUiCs
             ////Show info of selected element.
             //PickMethod_PickObject();
 
-            //Show info of several selected elements
-            PickMethod_PickObjects();
+            ////Show info of several selected elements
+            //PickMethod_PickObjects();
+
+            //Show info of elements selected by rectangle
+            PickMethod_PickElementByRectangle();
 
             return Result.Succeeded;
         }
@@ -49,7 +52,7 @@ namespace MyUiCs
         /// <param name="h">Header</param>
         public void ShowElementList(IEnumerable eIds, string h)
         {
-            string s = "\n\n - Class - Category - Name (or Family: Type Name) - Id - \r\n";
+            string s = "\n\n - Class - Category - Name (or Family: Type Name) - Id - \n\n";
             int count = 0;
 
             foreach (ElementId eId in eIds)
@@ -114,17 +117,37 @@ namespace MyUiCs
         #endregion
 
         #region PickMethod_PickObjects()
+        /// <summary>
+        /// Prompt the user to select multiples elements.
+        /// </summary>
         public void PickMethod_PickObjects()
         {
             IList<Reference> refs = _uidoc.Selection.PickObjects(ObjectType.Element, "Select multiples elements");
 
-            IList<ElementId> elemIds = new List<ElementId>();
+            IList<ElementId> eIds = new List<ElementId>();
             foreach (Reference r in refs)
             {
-                elemIds.Add(r.ElementId);
+                eIds.Add(r.ElementId);
             }
 
-            ShowElementList(elemIds, "Pick Objects");
+            ShowElementList(eIds, "Pick Objects");
+        }
+        #endregion
+
+        #region PickeMethod_PickElementByRectangle()
+        /// <summary>
+        /// Prompt the user to select by drawing rectangle.
+        /// </summary>
+        public void PickMethod_PickElementByRectangle()
+        {
+            IList<Element> e = _uidoc.Selection.PickElementsByRectangle("Draw a rectangle");
+            IList<ElementId> eIds = new List<ElementId>();
+            foreach (Element el in e)
+            {
+                eIds.Add(el.Id);
+            }
+
+            ShowElementList(eIds, "Pick By Rectangle: ");
         }
         #endregion
     }
