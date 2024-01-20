@@ -53,8 +53,11 @@ namespace MyUiCs
             ////Show info of selected/filtered wall.
             //PickWall();
 
-            //Handles selection canceling.
-            CancelSelection();
+            //Show info of selecter/filtered planar face.
+            PickPlanarFace();
+
+            ////Handles selection canceling.
+            //CancelSelection();
 
             return Result.Succeeded;
         }
@@ -251,6 +254,20 @@ namespace MyUiCs
         }
         #endregion
 
+        #region PickPlanarFace()
+        /// <summary>
+        /// Prompts the user to select a planar face w/ selection filter;
+        /// </summary>
+        public void PickPlanarFace()
+        {
+            SelectionFilterPlanarFace selFilterPlanarFace = new SelectionFilterPlanarFace(_doc);
+            Reference r = _uidoc.Selection.PickObject(ObjectType.Element, selFilterPlanarFace, "Select a planar face");
+
+            Element e = _uidoc.Document.GetElement(r);
+            DbElement.ShowBasicElementInfo(_doc, e);
+        }
+        #endregion
+
         #region CancelSelection()
         /// <summary>
         /// Handles selection canceling.
@@ -288,6 +305,32 @@ namespace MyUiCs
         }
 
         public bool AllowReference(Reference r, XYZ p)
+        {
+            return true;
+        }
+    }
+    #endregion
+
+    #region SelectionFilterPlanarFace
+    /// <summary>
+    /// Create a selection filter to select only planar face.
+    /// </summary>
+    class SelectionFilterPlanarFace : ISelectionFilter
+    {
+        //Member variables.
+        Document _doc;
+
+        public SelectionFilterPlanarFace(Document doc)
+        {
+            _doc = doc;
+        }
+
+        public bool AllowElement(Element e)
+        {
+            return true;
+        }
+
+        public bool AllowReference(Reference reference, XYZ position)
         {
             return true;
         }
