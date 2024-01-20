@@ -35,11 +35,17 @@ namespace MyUiCs
             ////Show info of selected element.
             //PickMethod_PickObject();
 
-            ////Show info of several selected elements
+            ////Show info of several selected elements.
             //PickMethod_PickObjects();
 
-            //Show info of elements selected by rectangle
-            PickMethod_PickElementByRectangle();
+            ////Show info of elements selected by rectangle.
+            //PickMethod_PickElementByRectangle();
+
+            ////Show coordinates of a picked point.
+            //PickMethod_PickPoint();
+
+            //Show coordinates of a picked point on a element.
+            PickMethod_PointOnElement();
 
             return Result.Succeeded;
         }
@@ -66,6 +72,11 @@ namespace MyUiCs
             TaskDialog.Show("Revit UI Lab", s);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e">Element</param>
+        /// <returns></returns>
         private string ElementToString(Element e)
         {
             if (e == null)
@@ -91,6 +102,11 @@ namespace MyUiCs
             return $"{e.GetType().Name}; {e.Category.Name}; {name}; {e.Id.IntegerValue}\r\n";
         }
 
+        /// <summary>
+        /// Show coordinates of a point.
+        /// </summary>
+        /// <param name="pt">Point</param>
+        /// <returns></returns>
         public static string PointToString(XYZ pt)
         {
             if(pt == null )
@@ -148,6 +164,42 @@ namespace MyUiCs
             }
 
             ShowElementList(eIds, "Pick By Rectangle: ");
+        }
+        #endregion
+
+        #region PickMethod_PickPoint()
+        public void PickMethod_PickPoint()
+        {
+            XYZ pt = _uidoc.Selection.PickPoint("Pick a point");
+
+            string msg = "Pick Point: ";
+            msg += PointToString(pt);
+
+            TaskDialog.Show("PickPoint", msg);
+        }
+        #endregion
+
+        #region PickMethod_PointOnElement()
+        /// <summary>
+        /// Prompts the user to pick a point on a element.
+        /// </summary>
+        public void PickMethod_PointOnElement()
+        {
+            Reference r = _uidoc.Selection.PickObject(ObjectType.PointOnElement, "Select a point on element");
+            Element e = _uidoc.Document.GetElement(r);
+            XYZ pt = r.GlobalPoint;
+
+            string msg = "";
+            if (pt != null)
+            {
+                msg = $"You picked the point {PointToString(pt)} on an element {e.Id.ToString()} \r\n";
+            }
+            else
+            {
+                msg = "no Point picked \n";
+            }
+
+            TaskDialog.Show("PickPointOnElement", msg);
         }
         #endregion
     }
