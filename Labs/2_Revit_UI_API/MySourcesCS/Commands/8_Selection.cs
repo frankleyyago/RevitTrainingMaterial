@@ -47,8 +47,11 @@ namespace MyUiCs
             ////Show coordinates of a picked point on a element.
             //PickMethod_PointOnElement();
 
-            //Show id of a picked face
-            PickMethod_PickFace();
+            ////Show id of a picked face
+            //PickMethod_PickFace();
+
+            //Show info of selected/filtered wall
+            PickWall();
 
             return Result.Succeeded;
         }
@@ -230,5 +233,38 @@ namespace MyUiCs
             TaskDialog.Show("PickFace", msg);
         }
         #endregion
+
+        #region PickWall()
+        /// <summary>
+        /// Prompts the user to select a walls w/ selection filter.
+        /// </summary>
+        public void PickWall()
+        {
+            SelectionFilterWall selFilterWall = new SelectionFilterWall();
+            Reference r = _uidoc.Selection.PickObject(ObjectType.Element, selFilterWall, "Select a wall");
+
+            Element e = _uidoc.Document.GetElement(r);
+            DbElement.ShowBasicElementInfo(_doc, e);
+        }
+        #endregion
+
     }
+
+    #region SelectionFilterWall
+    /// <summary>
+    /// Create a selection filter to select only walls.
+    /// </summary>
+    class SelectionFilterWall : ISelectionFilter
+    {
+        public bool AllowElement(Element e)
+        {
+            return e is Wall;
+        }
+
+        public bool AllowReference(Reference r, XYZ p)
+        {
+            return true;
+        }
+    }
+    #endregion
 }
