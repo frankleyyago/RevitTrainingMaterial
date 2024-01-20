@@ -44,8 +44,11 @@ namespace MyUiCs
             ////Show coordinates of a picked point.
             //PickMethod_PickPoint();
 
-            //Show coordinates of a picked point on a element.
-            PickMethod_PointOnElement();
+            ////Show coordinates of a picked point on a element.
+            //PickMethod_PointOnElement();
+
+            //Show id of a picked face
+            PickMethod_PickFace();
 
             return Result.Succeeded;
         }
@@ -200,6 +203,31 @@ namespace MyUiCs
             }
 
             TaskDialog.Show("PickPointOnElement", msg);
+        }
+        #endregion
+
+        #region PickMethod_PickFace()
+        /// <summary>
+        /// Prompts the user to select an object by face.
+        /// </summary>
+        public void PickMethod_PickFace()
+        {
+            Reference r = _uidoc.Selection.PickObject(ObjectType.Face, "Select a face");
+            Element e = _uidoc.Document.GetElement(r);
+
+            Face oFace = e.GetGeometryObjectFromReference(r) as Face;
+
+            string msg = "";
+            if (oFace != null)
+            {
+                msg = $"You picked the face of element {e.Id.ToString()} \r\n";
+            }
+            else
+            {
+                msg = "no Face picked \n";
+            }
+
+            TaskDialog.Show("PickFace", msg);
         }
         #endregion
     }
