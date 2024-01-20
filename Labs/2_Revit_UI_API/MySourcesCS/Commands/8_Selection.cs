@@ -47,11 +47,14 @@ namespace MyUiCs
             ////Show coordinates of a picked point on a element.
             //PickMethod_PointOnElement();
 
-            ////Show id of a picked face
+            ////Show id of a picked face.
             //PickMethod_PickFace();
 
-            //Show info of selected/filtered wall
-            PickWall();
+            ////Show info of selected/filtered wall.
+            //PickWall();
+
+            //Handles selection canceling.
+            CancelSelection();
 
             return Result.Succeeded;
         }
@@ -239,12 +242,35 @@ namespace MyUiCs
         /// Prompts the user to select a walls w/ selection filter.
         /// </summary>
         public void PickWall()
-        {
+        {            
             SelectionFilterWall selFilterWall = new SelectionFilterWall();
             Reference r = _uidoc.Selection.PickObject(ObjectType.Element, selFilterWall, "Select a wall");
 
             Element e = _uidoc.Document.GetElement(r);
-            DbElement.ShowBasicElementInfo(_doc, e);
+            DbElement.ShowBasicElementInfo(_doc, e);            
+        }
+        #endregion
+
+        #region CancelSelection()
+        /// <summary>
+        /// Handles selection canceling.
+        /// </summary>
+        public void CancelSelection()
+        {
+            try
+            {
+                Reference r = _uidoc.Selection.PickObject(ObjectType.Element, "Select an element");
+                Element e = _uidoc.Document.GetElement(r);
+                DbElement.ShowBasicElementInfo(_doc, e);
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            {
+                TaskDialog.Show("CancelSelection", "You canceled the selection.");
+            }
+            catch (Exception ex)
+            {
+                TaskDialog.Show("CancelSelection", "Other exception caught in CancelSelection(): " + ex.Message);
+            }
         }
         #endregion
 
