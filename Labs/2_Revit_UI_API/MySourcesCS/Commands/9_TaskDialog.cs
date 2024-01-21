@@ -35,6 +35,11 @@ namespace MyUiCs
             TaskDialogResult tdr = default(TaskDialogResult);
             tdr = TaskDialog.Show("Task Dialog Static 2", "Main message", (TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No | TaskDialogCommonButtons.Cancel));
 
+            //(3) Sets a default button.
+            TaskDialogResult tdr2 = default(TaskDialogResult);
+            TaskDialogResult defaultButton = TaskDialogResult.No;
+            tdr2 = TaskDialog.Show("Task Dialog Static 3", "Main message", (TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No|TaskDialogCommonButtons.Cancel), defaultButton);
+
             return Result.Succeeded;
         }
     }
