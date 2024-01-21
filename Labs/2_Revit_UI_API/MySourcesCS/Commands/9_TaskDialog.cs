@@ -28,7 +28,12 @@ namespace MyUiCs
             _uidoc = _uiapp.ActiveUIDocument;
             _doc = _uidoc.Document;
 
+            //(1) Shows a simple task dialog box.
             TaskDialog.Show("Task Dialog Static 1", "Main message");
+
+            //(2) Adding [Yes] [No] [Cancel] buttons.
+            TaskDialogResult tdr = default(TaskDialogResult);
+            tdr = TaskDialog.Show("Task Dialog Static 2", "Main message", (TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No | TaskDialogCommonButtons.Cancel));
 
             return Result.Succeeded;
         }
