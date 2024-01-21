@@ -59,6 +59,7 @@
     <Compile Include="Commands\1_HelloWorld.cs" />
     <Compile Include="Commands\2_DbElement.cs" />
     <Compile Include="Commands\3_ElementFiltering.cs" />
+    <Compile Include="Commands\9_TaskDialog.cs" />
     <Compile Include="Commands\4_ElementModification.cs" />
     <Compile Include="Commands\5_ModelCreation.cs" />
     <Compile Include="Commands\6_ExtensibleStorage.cs" />

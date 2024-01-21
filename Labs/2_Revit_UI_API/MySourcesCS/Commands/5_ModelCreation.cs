@@ -42,14 +42,14 @@ namespace MyUiCs
         /// Create four walls.
         /// </summary>
         /// <returns></returns>
-        public List<Wall> CreateWalls()
+        public static List<Wall> CreateWalls(Document doc)
         {
             //Dimensions of the house.
             double width = (25.0);
             double depth = (50.0);
 
             //Create a new level instance and assign to it the value of the filter result.
-            Level level1 = (Level)ElementFiltering.FindElement(_doc, typeof(Level), "Level 1", null);
+            Level level1 = (Level)ElementFiltering.FindElement(doc, typeof(Level), "Level 1", null);
 
             //Make sure that exist a "Level 1" in the current doc.
             if (level1 == null)
@@ -59,7 +59,7 @@ namespace MyUiCs
             }
 
             //Create a new level instance and assign to it the value of the filter result.
-            Level level2 = (Level)ElementFiltering.FindElement(_doc, typeof(Level), "Level 2", null);
+            Level level2 = (Level)ElementFiltering.FindElement(doc, typeof(Level), "Level 2", null);
 
             //Make sure that exist a "Level 2" in the current doc.
             if (level2 == null)
@@ -88,15 +88,15 @@ namespace MyUiCs
                 //Create a line based in the current pts.
                 Line baseCurve = Line.CreateBound(pts[i], pts[i + 1]);
                 //Create a wall using the current baseCurve.
-                Wall aWall = Wall.Create(_doc, baseCurve, level1.Id, false);
+                Wall aWall = Wall.Create(doc, baseCurve, level1.Id, false);
                 //Set the top constrait to level 2.
                 aWall.get_Parameter(BuiltInParameter.WALL_HEIGHT_TYPE).Set(level2.Id);
                 //Save the wall.
                 walls.Add(aWall);
             }
 
-            _doc.Regenerate();
-            _doc.AutoJoinElements();
+            doc.Regenerate();
+            doc.AutoJoinElements();
 
             return walls;
         }
@@ -107,7 +107,7 @@ namespace MyUiCs
         /// Create a door in the middle of the wall.
         /// </summary>
         /// <param name="hostWall">Wall that will receive the door</param>
-        public void AddDoor(Wall hostWall)
+        public static void AddDoor(Document doc, Wall hostWall)
         {
             //Create strings with doors informations.
             string dFamilyName = "Single-Flush";
@@ -115,7 +115,7 @@ namespace MyUiCs
             string dFamilyAndTypeName = $"{dFamilyName} : {dTypeName}";
 
             //Create a new door type.
-            FamilySymbol dType = (FamilySymbol)ElementFiltering.FindFamilyType(_doc, typeof(FamilySymbol), dFamilyName, dTypeName, BuiltInCategory.OST_Doors);
+            FamilySymbol dType = (FamilySymbol)ElementFiltering.FindFamilyType(doc, typeof(FamilySymbol), dFamilyName, dTypeName, BuiltInCategory.OST_Doors);
 
             //Activate symbols that are not placed in the model.
             if (!dType.IsActive)
@@ -137,10 +137,10 @@ namespace MyUiCs
 
             //Set the bottom of the wall and level as reference to the door.
             ElementId idLevel1 = hostWall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT).AsElementId();
-            Level level1 = (Level)_doc.GetElement(idLevel1);
+            Level level1 = (Level)doc.GetElement(idLevel1);
 
             //Create a door.
-            FamilyInstance aDoor = _doc.Create.NewFamilyInstance(pt, dType, hostWall, level1, StructuralType.NonStructural);
+            FamilyInstance aDoor = doc.Create.NewFamilyInstance(pt, dType, hostWall, level1, StructuralType.NonStructural);
         }
         #endregion
 
@@ -149,7 +149,7 @@ namespace MyUiCs
         /// Create a window in the middle of the wall.
         /// </summary>
         /// <param name="hostWall"></param>
-        public void AddWindow(Wall hostWall)
+        public static void AddWindow(Document doc, Wall hostWall)
         {
             //Create strings with windows informations.
             string wFamilyName = "Fixed";
@@ -158,7 +158,7 @@ namespace MyUiCs
             double sillHeight = 3;
 
             //Create a new window type.
-            FamilySymbol wType = (FamilySymbol)ElementFiltering.FindFamilyType(_doc, typeof(FamilySymbol), wFamilyName, wTypeName, BuiltInCategory.OST_Windows);
+            FamilySymbol wType = (FamilySymbol)ElementFiltering.FindFamilyType(doc, typeof(FamilySymbol), wFamilyName, wTypeName, BuiltInCategory.OST_Windows);
 
             //Activate symbols that are not placed in the model.
             if (!wType.IsActive)
@@ -180,10 +180,10 @@ namespace MyUiCs
 
             //Set the bottom of the wall and level as reference to the window.
             ElementId idLevel1 = hostWall.get_Parameter(BuiltInParameter.WALL_BASE_CONSTRAINT).AsElementId();
-            Level level1 = (Level)_doc.GetElement(idLevel1);
+            Level level1 = (Level)doc.GetElement(idLevel1);
 
             //Create a window.
-            FamilyInstance aWindow = _doc.Create.NewFamilyInstance(pt, wType, hostWall, level1, StructuralType.NonStructural);
+            FamilyInstance aWindow = doc.Create.NewFamilyInstance(pt, wType, hostWall, level1, StructuralType.NonStructural);
 
             //Set sill height.
             aWindow.get_Parameter(BuiltInParameter.INSTANCE_SILL_HEIGHT_PARAM).Set(sillHeight);
@@ -257,15 +257,15 @@ namespace MyUiCs
         public void CreateHouse()
         {
             //Create four walls.
-            List<Wall> w = CreateWalls();
+            List<Wall> w = CreateWalls(_doc);
 
             //Create a doors in first wall.
-            AddDoor(w[0]);
+            AddDoor(_doc, w[0]);
 
             //Create a windows in all other walls.
             for (int i = 1; i <= 3; i++)
             {
-                AddWindow(w[i]);
+                AddWindow(_doc, w[i]);
             }
 
             //Create roof.
