@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyIntroCs", "1_Revit_API_In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyUiCs", "2_Revit_UI_API\MySourcesCS\MyUiCs.csproj", "{DFD577D0-F441-4FEC-87A5-84D64F9E8185}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFamilyCs", "3_Revit_Family_API\MyFamilyCs\MyFamilyCs.csproj", "{09EA44C3-7781-44F5-BB2B-BD8132D068FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,14 @@ Global
 		{DFD577D0-F441-4FEC-87A5-84D64F9E8185}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFD577D0-F441-4FEC-87A5-84D64F9E8185}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{DFD577D0-F441-4FEC-87A5-84D64F9E8185}.Release|ARM64.Build.0 = Release|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{09EA44C3-7781-44F5-BB2B-BD8132D068FA}.Release|ARM64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
