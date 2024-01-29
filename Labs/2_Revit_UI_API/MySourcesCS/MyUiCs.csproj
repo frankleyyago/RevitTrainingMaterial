@@ -55,7 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="1_Ribbon.cs" />
+    <Compile Include="App.cs" />
     <Compile Include="Commands\9_Event.cs" />
     <Compile Include="Commands\1_HelloWorld.cs" />
     <Compile Include="Commands\2_DbElement.cs" />

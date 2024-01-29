@@ -18,7 +18,7 @@ using System.Reflection;
 
 namespace MyUiCs
 {
-    public class UIRibbon : IExternalApplication
+    public class App : IExternalApplication
     {
         //Assembly name and namespace of external command.
         const string _myUiCsName = "MyUiCs";

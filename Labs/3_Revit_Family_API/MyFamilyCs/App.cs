@@ -9,15 +9,16 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Autodesk.Revit.Attributes;
 #endregion
 
-namespace MyIntroCs
+namespace MyFamilyCs
 {
     /// <summary>
     /// Implements the Revit add-in interface IExternalApplication
-    /// </summary>
-    [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
-    [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
+    /// </summary>    
+    [Transaction(TransactionMode.Manual)]
+    [Regeneration(RegenerationOption.Manual)]
     public class App : IExternalApplication
     {
         /// <summary>

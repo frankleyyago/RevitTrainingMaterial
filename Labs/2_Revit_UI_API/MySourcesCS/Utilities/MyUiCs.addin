@@ -5,7 +5,7 @@
 		<Name>MyUiCs</Name>
 		<Assembly>MyUiCs/MyUiCs.dll</Assembly>
 		<AddInId>20EA6025-D78F-495D-B1BF-0F598EB482FE</AddInId>
-		<FullClassName>MyUiCs.UIRibbon</FullClassName>
+		<FullClassName>MyUiCs.App</FullClassName>
 		<Text>MyUiCs</Text>
 		<Description>Show a tab</Description>
 		<VendorId>Frankleyyago</VendorId>

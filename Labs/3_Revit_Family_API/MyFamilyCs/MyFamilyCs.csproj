@@ -65,7 +65,7 @@
     <Content Include="Utilities\PostbuildEvent.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Utilities\MyIntroCs.addin">
+    <None Include="Utilities\MyFamilyCs.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
