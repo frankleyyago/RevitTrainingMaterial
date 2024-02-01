@@ -41,7 +41,7 @@ namespace MyFamilyCs
             RibbonPanel panel = RibbonPanel(application);
             string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin11", "FirstPlugin21", thisAssemblyPath, "MyFamilyCs.ColumnRectangle"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin1", thisAssemblyPath, "MyFamilyCs.ColumnRectangle"))
                 is PushButton button1)
             {
                 button1.ToolTip = "My First Plugin";

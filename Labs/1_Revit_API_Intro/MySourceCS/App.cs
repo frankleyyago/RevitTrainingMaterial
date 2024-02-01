@@ -40,7 +40,7 @@ namespace MyIntroCs
             RibbonPanel panel = RibbonPanel(application);
             string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
 
-            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin2", thisAssemblyPath, "MyIntroCs.HelloWorld"))
+            if (panel.AddItem(new PushButtonData("FirstPlugin1", "FirstPlugin1", thisAssemblyPath, "MyIntroCs.HelloWorldFull"))
                 is PushButton button1)
             {
                 button1.ToolTip = "My First Plugin";
