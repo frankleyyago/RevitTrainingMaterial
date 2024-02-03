@@ -57,5 +57,55 @@ namespace MyFamilyCs
             return true;
         }
         #endregion
+
+        #region createProfileRectangle()
+        /// <summary>
+        /// Creates column's rectangular profile.
+        /// </summary>
+        /// <returns></returns>
+        public CurveArrArray createProfileRectangle()
+        {
+            //Size of column's section.
+            double w = mmToFeet(600.0);
+            double d = mmToFeet(600.0);
+
+            //Number of vertices.
+            const int nVerts = 4;
+
+            XYZ[] pts = new XYZ[]
+            {
+                new XYZ(-w / 2.0, -d / 2.0, 0.0),
+                new XYZ(w / 2.0, -d / 2.0, 0.0),
+                new XYZ(w / 2.0, d / 2.0, 0.0),
+                new XYZ(-w / 2.0, d / 2.0, 0.0),
+                new XYZ(-w / 2.0, -d / 2.0, 0.0)
+            };
+
+            //Define a loop.
+            CurveArray pLoop = _app.Create.NewCurveArray();
+            for (int i = 0; i < nVerts; i++)
+            {
+                Line line = Line.CreateBound(pts[i], pts[i + 1]);
+                pLoop.Append(line);
+            }
+
+            //Put the loop  in the curveArrArray ass a profile.
+            CurveArrArray pProfile = _app.Create.NewCurveArrArray();
+
+            return pProfile;
+        }
+        #endregion
+
+        #region mmToFeet()
+        /// <summary>
+        /// Converts milimeter to feet.
+        /// </summary>
+        /// <param name="mmVal"></param>
+        /// <returns></returns>
+        double mmToFeet(double mmVal)
+        {
+            return mmVal / 304.8;
+        }
+        #endregion
     }
 }
