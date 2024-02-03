@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Commands\1_ColumnRectangle.cs" />
+    <Compile Include="Commands\Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
