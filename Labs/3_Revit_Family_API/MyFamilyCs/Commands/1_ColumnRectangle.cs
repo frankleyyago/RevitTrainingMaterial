@@ -96,6 +96,18 @@ namespace MyFamilyCs
         }
         #endregion
 
+        #region createSolid()
+        public Extrusion createSolid()
+        {
+            CurveArrArray pProfile = createProfileRectangle();
+            
+            ReferencePlane pRefPlane = findElement(typeof(ReferencePlane), "Reference Plane") as ReferencePlane;
+            SketchPlane pSketchPlane = SketchPlane.Create(_doc, pRefPlane.Plane);
+        }
+        #region
+
+        #region helperFunctions
+
         #region mmToFeet()
         /// <summary>
         /// Converts milimeter to feet.
@@ -106,6 +118,32 @@ namespace MyFamilyCs
         {
             return mmVal / 304.8;
         }
+        #endregion
+
+        #region findElement()
+        /// <summary>
+        /// Find an element of the figen type and name.
+        /// </summary>
+        /// <param name="targetType">Type of target to be find.</param>
+        /// <param name="targetName">Name of target to be find.</param>
+        /// <returns></returns>
+        public Element findElement(Type targetType, string targetName)
+        {
+            FilteredElementCollector collector = new FilteredElementCollector(_doc);
+            collector.WherePasses(new ElementClassFilter(targetType));
+
+            var targetElems = from element in collector where element.Name.Equals(targetName) select element;
+            List<Element> elems = targetElems.ToList<Element>();
+
+            if (elems.Count > 0 )
+            {
+                return elems[0];
+            }
+
+            return null;
+        }
+        #endregion
+
         #endregion
     }
 }
