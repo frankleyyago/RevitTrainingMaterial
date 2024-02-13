@@ -24,11 +24,21 @@ namespace MyFamilyCs
             _app = commandData.Application.Application;
             _doc = commandData.Application.ActiveUIDocument.Document;
 
-            if (!isRightTemplate(BuiltInCategory.OST_Columns))
+            using(Transaction tx = new Transaction(_doc, "Create Extrusion"))
             {
-                Util.ErrorMsg("Please open Metric Column.rft");
-                return Result.Failed;
+                tx.Start();
+
+                if (!isRightTemplate(BuiltInCategory.OST_Columns))
+                {
+                    Util.ErrorMsg("Please open Metric Column.rft");
+                    return Result.Failed;
+                }
+
+                Extrusion pSolid = createSolid();
+
+                tx.Commit();
             }
+
 
             return Result.Succeeded;
         }
@@ -89,22 +99,34 @@ namespace MyFamilyCs
                 pLoop.Append(line);
             }
 
-            //Put the loop  in the curveArrArray ass a profile.
+            //Put the loop  in the curveArrArray as a profile.
             CurveArrArray pProfile = _app.Create.NewCurveArrArray();
+            pProfile.Append(pLoop);
 
             return pProfile;
         }
         #endregion
 
         #region createSolid()
+        /// <summary>
+        /// Create a solid extrusion using the profile.
+        /// </summary>
+        /// <returns></returns>
         public Extrusion createSolid()
         {
             CurveArrArray pProfile = createProfileRectangle();
             
             ReferencePlane pRefPlane = findElement(typeof(ReferencePlane), "Reference Plane") as ReferencePlane;
-            SketchPlane pSketchPlane = SketchPlane.Create(_doc, pRefPlane.Plane);
+            SketchPlane pSketchPlane = SketchPlane.Create(_doc, pRefPlane.GetPlane());
+
+            double dHeight = mmToFeet(4000.0);
+
+            bool bIsSolid = true;
+
+            return _doc.FamilyCreate.NewExtrusion(bIsSolid, pProfile, pSketchPlane, dHeight);
+
         }
-        #region
+        #endregion
 
         #region helperFunctions
 
