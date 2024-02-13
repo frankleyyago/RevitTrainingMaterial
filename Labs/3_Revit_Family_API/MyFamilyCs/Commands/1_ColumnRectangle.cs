@@ -128,6 +128,23 @@ namespace MyFamilyCs
         }
         #endregion
 
+        #region addAlignments()
+        /// <summary>
+        /// Add six alignments to the column's faces.
+        /// </summary>
+        /// <param name="pBox"></param>
+        public void addAlignments(Extrusion pBox)
+        {
+            View pView = findElement(typeof(View), "Front") as View;
+
+            Level upperLevel = findElement(typeof(Level), "Upper ref level") as Level;
+            Reference ref1 = upperLevel.GetPlaneReference();
+
+            PlanarFace upperFace = findFace(pBox, new XYZ(0.0, 0.0, 1.0));
+            Reference ref2 = upperFace.Reference;
+        }
+        #endregion
+
         #region helperFunctions
 
         #region mmToFeet()
@@ -160,6 +177,38 @@ namespace MyFamilyCs
             if (elems.Count > 0 )
             {
                 return elems[0];
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region findFace()
+        /// <summary>
+        /// Finds a planar face with the given normal.
+        /// </summary>
+        /// <param name="pBox"></param>
+        /// <param name="normal"></param>
+        /// <returns></returns>
+        public PlanarFace findFace(Extrusion pBox, XYZ normal)
+        {
+            Options op = new Options();
+            op.ComputeReferences = true;
+            IEnumerable<GeometryObject> geomObjs = pBox.get_Geometry(op).AsEnumerable();
+
+            foreach (GeometryObject geomObj in geomObjs)
+            {
+                if(geomObj is Solid)
+                {
+                    Solid pSolid = geomObj as Solid;
+                    FaceArray faces = pSolid.Faces;
+                    foreach (Face pFace in faces)
+                    {
+                        PlanarFace pPlanarFace = pFace as PlanarFace;
+                        if ((pPlanarFace != null) && pPlanarFace.FaceNormal.IsAlmostEqualTo(normal));
+                        { return pPlanarFace; }
+                    }
+                }
             }
 
             return null;
